@@ -1,2 +1,2 @@
-def adicionarAvaliacao(avaliacao, empresa):
+def adicionarAvaliacao(avaliacao, empresaId):
     return True
