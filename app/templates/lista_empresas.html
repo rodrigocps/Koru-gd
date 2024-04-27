@@ -3,10 +3,16 @@
 {% block title %}Empresas{% endblock %}
 
 {% block content %}
-    <h1>{{ empresas|length }} Empresas</h1>
     <ul>
         {% for empresa in empresas %}
             <li>{{empresa.nome}}</li>
         {% endfor %}
     </ul>
+    {% if pagina: %}
+        {% if pagina > 1: %}
+            <a href={{url_for("empresas", pagina=pagina-1)}}>pagina anterior</a>
+        {%endif%}
+        <a href={{url_for("empresas", pagina=pagina+1)}}>proxima pagina</a>
+    {% endif %}
 {% endblock %}
+

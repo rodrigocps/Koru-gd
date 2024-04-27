@@ -3,9 +3,7 @@
 from app import app
 from flask import render_template, redirect, request
 
-import app.services.usuarioService as usuarioService;
-import app.services.empresaService as empresaService;
-import app.services.avaliacaoService as avaliacaoService;
+from app.services import usuarioService, empresaService, avaliacaoService
 
 @app.route('/')
 @app.route('/index')
@@ -18,16 +16,26 @@ def cadastrar():
         return render_template("cadastro_usuario.html")
     
     elif request.method == "POST":
-        # extrair dados do formulario
-        if(usuarioService.adicionarUsuario(None)): #substituir None por usuario
+        usuario = {
+            "nome" : request.form['nome'],
+            "email" : request.form['email'],
+            "senha" : request.form['senha']
+        }
+
+        success, msg = usuarioService.adicionarUsuario(usuario);
+
+        if(success): #substituir None por usuario
             return redirect("/empresas")
         else:
-            return "erro"
+            return render_template("cadastro_usuario.html", msg=msg)
         
 
 @app.route("/empresas", methods=["GET"])
 def empresas():
-    return render_template("lista_empresas.html", empresas=empresaService.listarEmpresas())
+    pagina = request.args.get("pagina", default=1, type=int)
+
+    empresas = empresaService.listarEmpresas(pagina);
+    return render_template("lista_empresas.html", empresas=empresas, pagina=pagina)
 
 
 @app.route("/empresa/<empresaId>", methods=["GET"])
