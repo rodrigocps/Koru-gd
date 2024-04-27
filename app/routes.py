@@ -10,7 +10,7 @@ import app.services.avaliacaoService as avaliacaoService;
 def index():
     return render_template('index.html')
 
-@app.route("/signup", methods=["GET"])
+@app.route("/signup", methods=["GET", "POST"])
 def cadastrar():
     if request.method == "GET":
         return render_template("cadastro_usuario.html")
@@ -33,7 +33,7 @@ def empresa(empresaId):
     return render_template("empresa.html", empresa=empresaService.getEmpresa(empresaId))
 
 
-@app.route("/empresa/<empresaId>/adicionarAvaliacao", methods=["GET"])
+@app.route("/empresa/<empresaId>/adicionarAvaliacao", methods=["GET", "POST"])
 def adicionar_avaliacao(empresaId):
     if request.method == "GET":
         return render_template("adicionar_avaliacao.html")
