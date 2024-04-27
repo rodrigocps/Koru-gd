@@ -2,6 +2,8 @@ from app import app
 from flask import render_template
 import json
 
+import app.services.usuarioServices as usuarioServices;
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -9,7 +11,10 @@ def index():
 
 @app.route("/signup", methods=["GET"])
 def cadastrar_page():
-    return render_template("cadastro_usuario.html")
+    if(usuarioServices.adicionarUsuario):
+        return render_template("cadastro_usuario.html")
+    else:
+        return "erro"
 
 @app.route("/signup", methods=["POST"])
 def cadastro():
