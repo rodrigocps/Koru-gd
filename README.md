@@ -57,12 +57,12 @@ Este repositório contém um guia simples sobre como configurar e ativar um ambi
 
 OBS: As dependencias para este projeto podem ser instaladas usando so comandos:
     flask:
-    ```bash
+    ```
         pip install flask
     ```
-    
-    python-dotenv
-    ```bash
+
+    python-dotenv:
+    ```
         pip install python-dotenv
     ```
 
