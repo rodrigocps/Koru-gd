@@ -1,4 +1,4 @@
-def adicionarUsuario() :
+def adicionarUsuario(usuario) :
     return True
 
 def atualizarUsuario() :

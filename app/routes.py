@@ -1,8 +1,10 @@
 from app import app
-from flask import render_template
+from flask import render_template, redirect
 import json
 
-import app.services.usuarioServices as usuarioServices;
+import app.services.usuarioService as usuarioService;
+import app.services.empresaService as empresaService;
+import app.services.avaliacaoService as avaliacaoService;
 
 @app.route('/')
 @app.route('/index')
@@ -11,18 +13,15 @@ def index():
 
 @app.route("/signup", methods=["GET"])
 def cadastrar_page():
-    if(usuarioServices.adicionarUsuario):
-        return render_template("cadastro_usuario.html")
-    else:
-        return "erro"
+    return render_template("cadastro_usuario.html")
 
 @app.route("/signup", methods=["POST"])
 def cadastro():
-    return "Usuario cadastrado"
+    if(usuarioService.adicionarUsuario()):
+        return redirect("/empresas")
+    else:
+        return "erro"
 
 @app.route("/empresas", methods=["GET"])
 def empresas():
-    empresas = json.load(open("./1100_empresas.json", encoding="utf8"))
-    empresas_ordenadas = sorted(empresas, key=lambda x: x['nome'])
-
-    return render_template("lista_empresas.html", empresas=empresas_ordenadas)
+    return render_template(empresas=empresaService.listarEmpresas())
