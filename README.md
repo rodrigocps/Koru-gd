@@ -55,6 +55,7 @@ Este repositório contém um guia simples sobre como configurar e ativar um ambi
 
     Isso irá desativar o ambiente virtual e você voltará ao ambiente global do Python.
     
+As dependencias que voce vai precisar instalar são as seguintes: 
 - flask:
     ```bash
     pip install flask
