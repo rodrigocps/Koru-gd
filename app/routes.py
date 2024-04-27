@@ -40,7 +40,8 @@ def empresas():
 
 @app.route("/empresa/<empresaId>", methods=["GET"])
 def empresa(empresaId):
-    return render_template("empresa.html", empresa=empresaService.getEmpresa(empresaId))
+    empresa=empresaService.getEmpresa(empresaId)
+    return render_template("empresa.html", empresa=empresa)
 
 
 @app.route("/empresa/<empresaId>/adicionarAvaliacao", methods=["GET", "POST"])

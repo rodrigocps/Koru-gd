@@ -14,4 +14,12 @@ def listarEmpresas(pagina):
 
 
 def getEmpresa(empresaId):
-    return
+    conn = sqlite3.connect("banco.db")
+    conn.row_factory = sqlite3.Row
+
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM empresas WHERE id = {}".format(empresaId))
+    empresa = cursor.fetchone()
+    conn.close()
+
+    return empresa
