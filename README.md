@@ -54,18 +54,16 @@ Este repositório contém um guia simples sobre como configurar e ativar um ambi
     ```
 
     Isso irá desativar o ambiente virtual e você voltará ao ambiente global do Python.
-
-OBS: As dependencias para este projeto podem ser instaladas usando so comandos:
-    flask:
-    ```
-        pip install flask
-    ```
-
-    python-dotenv:
-    ```
-        pip install python-dotenv
+    
+- flask:
+    ```bash
+    pip install flask
     ```
 
+- python-dotenv:
+    ```bash
+    pip install python-dotenv
+    ```
 ## Observações
 
 - É uma prática recomendada adicionar o diretório do ambiente virtual ao `.gitignore` do seu projeto para evitar que ele seja incluído no controle de versão.
