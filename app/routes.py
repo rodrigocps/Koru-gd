@@ -1,3 +1,5 @@
+# Neste módulo serão adicionadas as rotas, que processam as requisicoes, retornam as views e chamam os services.
+
 from app import app
 from flask import render_template, redirect, request
 
