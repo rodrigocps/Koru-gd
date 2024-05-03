@@ -5,7 +5,7 @@
 {% block content %}
     <ul>
         {% for empresa in empresas %}
-            <li><a href={{url_for("empresa", empresaId=empresa.id)}}>{{empresa.nome}}</a></li>
+            <li><a href={{url_for("empresa", empresaId=empresa.id, fromPage=pagina)}}>{{empresa.nome}}</a></li>
         {% endfor %}
     </ul>
     {% if pagina: %}

@@ -1,0 +1,14 @@
+{% block content %}
+{% if codigoEmpresa: %}
+<form name="avaliacao" id="avaliacao" method="POST" action="{{ url_for('adicionar_avaliacao', empresaId=codigoEmpresa) }}">
+    <label for="titulo">Digite o título: </label>
+    <input id="titulo" name="titulo" type="text" required/>
+
+    <label for="texto">Digite o texto: </label>
+    <textarea id="texto" name="texto" required></textarea>
+
+    <button type="submit">Enviar</button>
+</form>
+{% endif %}
+
+{% endblock %}
