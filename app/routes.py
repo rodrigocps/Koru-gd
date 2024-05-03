@@ -1,7 +1,7 @@
 # Neste módulo serão adicionadas as rotas, que processam as requisicoes, retornam as views e chamam os services.
 
 from app import app
-from flask import render_template, redirect, request
+from flask import render_template, redirect, request, url_for
 
 from app.services import usuarioService, empresaService, avaliacaoService
 
@@ -21,14 +21,14 @@ def cadastrar():
             "email" : request.form['email'],
             "senha" : request.form['senha']
         }
-
+        
         success, msg = usuarioService.adicionarUsuario(usuario);
 
-        if(success): #substituir None por usuario
+        if(success):
             return redirect("/empresas")
         else:
             return render_template("cadastro_usuario.html", msg=msg)
-        
+
 
 @app.route("/empresas", methods=["GET"])
 def empresas():
@@ -40,18 +40,26 @@ def empresas():
 
 @app.route("/empresa/<empresaId>", methods=["GET"])
 def empresa(empresaId):
+    pagina = request.args.get("fromPage", default=1, type=int)
+
+    avaliacoes = avaliacaoService.getAvaliacoes(empresaId)
     empresa=empresaService.getEmpresa(empresaId)
-    return render_template("empresa.html", empresa=empresa)
+    return render_template("empresa.html", empresa=empresa, avaliacoes=avaliacoes, pagina=pagina)
 
 
 @app.route("/empresa/<empresaId>/adicionarAvaliacao", methods=["GET", "POST"])
 def adicionar_avaliacao(empresaId):
     if request.method == "GET":
-        return render_template("adicionar_avaliacao.html")
+        return render_template("adicionar_avaliacao.html", codigoEmpresa = empresaId)
     
     elif request.method == "POST":
-        # extrair dados do formulario
-        if(avaliacaoService.adicionarAvaliacao(None, empresaId)): #substituir (None, empresaId) por (avaliacao, empresaId)
-            return redirect("/empresa")
+        avaliacao = {
+            "titulo" : request.form["titulo"],
+            "texto" : request.form["texto"]
+        }
+
+        sucesso, msg = avaliacaoService.adicionarAvaliacao(avaliacao, empresaId)
+        if sucesso:
+            return redirect(url_for("empresa", empresaId=empresaId)) 
         else:
-            return "erro"
+            return msg

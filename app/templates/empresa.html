@@ -3,6 +3,21 @@
 {% if empresa: %}
     <h1>{{empresa.nome}}</h1>
     <h3>{{empresa.setor}}</h3>
+
+    <a href={{url_for("adicionar_avaliacao", empresaId = empresa.id)}}>Adicionar avaliação</a>
+    <br/>
+    <a href={{url_for("empresas", pagina=pagina)}}>Voltar para a lista de empresas</a>
+
+    {% if avaliacoes: %}
+        <h2>Avaliações</h2>
+        <hr/>
+        {% for avaliacao in avaliacoes: %}
+            <h3>{{avaliacao.titulo}}</h3>
+            <p>{{avaliacao.texto}}</p>
+            <hr/>
+            <br/>
+        {% endfor %}
+    {% endif %}
 {%endif%}
 
 {% endblock%}
