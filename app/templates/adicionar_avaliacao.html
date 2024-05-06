@@ -1,11 +1,34 @@
+{% extends "base.html" %}
+
 {% block content %}
 {% if codigoEmpresa: %}
-<form name="avaliacao" id="avaliacao" method="POST" action="{{ url_for('adicionar_avaliacao', empresaId=codigoEmpresa) }}">
+
+{% set action = url_for('adicionar_avaliacao', empresaId=codigoEmpresa) %}
+{% set titulo = "" %}
+{% set texto = "" %}
+
+{% if avaliacao: %}
+    {% set action = url_for('editar_avaliacao', empresaId=codigoEmpresa, avaliacaoId=avaliacao.id) %}
+    {% set titulo = avaliacao.titulo %}
+    {% set texto = avaliacao.texto %}
+{% endif %}
+
+<form name="avaliacao" id="avaliacao" method="POST" action="{{action}}">
     <label for="titulo">Digite o título: </label>
-    <input id="titulo" name="titulo" type="text" required/>
+    <input 
+        id="titulo" 
+        name="titulo"
+        type="text" 
+        required
+        value="{{titulo}}"
+    />
 
     <label for="texto">Digite o texto: </label>
-    <textarea id="texto" name="texto" required></textarea>
+    <textarea 
+        id="texto" 
+        name="texto" 
+        required
+    >{{texto}}</textarea>
 
     <button type="submit">Enviar</button>
 </form>
