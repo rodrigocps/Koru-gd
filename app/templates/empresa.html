@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+
 {% block content %}
 
 {% if empresa: %}
@@ -14,6 +16,19 @@
         {% for avaliacao in avaliacoes: %}
             <h3>{{avaliacao.titulo}}</h3>
             <p>{{avaliacao.texto}}</p>
+            <a 
+            href={{url_for("editar_avaliacao", avaliacaoId = avaliacao.id, empresaId = empresa.id)}}
+            >
+            Editar
+            </a>
+
+            <a 
+            href={{url_for("excluir_avaliacao", avaliacaoId = avaliacao.id, empresaId = empresa.id)}}
+            onclick="return confirm('Tem certeza que deseja excluir esta avaliação?')"
+            >
+            Excluir
+            </a>
+
             <hr/>
             <br/>
         {% endfor %}

@@ -47,7 +47,7 @@ def empresa(empresaId):
     return render_template("empresa.html", empresa=empresa, avaliacoes=avaliacoes, pagina=pagina)
 
 
-@app.route("/empresa/<empresaId>/adicionarAvaliacao", methods=["GET", "POST"])
+@app.route("/empresa/<empresaId>/avaliacoes/adicionar", methods=["GET", "POST"])
 def adicionar_avaliacao(empresaId):
     if request.method == "GET":
         return render_template("adicionar_avaliacao.html", codigoEmpresa = empresaId)
@@ -63,3 +63,26 @@ def adicionar_avaliacao(empresaId):
             return redirect(url_for("empresa", empresaId=empresaId)) 
         else:
             return msg
+        
+
+@app.route("/empresa/<empresaId>/avaliacoes/excluir/<avaliacaoId>", methods=["GET" , "POST"])
+def excluir_avaliacao(empresaId, avaliacaoId):
+    avaliacaoService.excluirAvaliacao(empresaId, avaliacaoId)
+    return redirect(url_for("empresa", empresaId=empresaId))
+
+@app.route("/empresa/<empresaId>/avaliacoes/editar/<avaliacaoId>", methods=["GET" , "POST"])
+def editar_avaliacao(empresaId, avaliacaoId):
+    if(request.method == "GET"):
+        avaliacao = avaliacaoService.getAvaliacao(empresaId, avaliacaoId)
+        if(avaliacao):
+            return render_template("adicionar_avaliacao.html", codigoEmpresa = empresaId, avaliacao=avaliacao)
+        else:
+            return "Avaliacao não encontrada."
+    elif(request.method == "POST"):
+        avaliacao = {
+            "id" : avaliacaoId,
+            "titulo" : request.form["titulo"],
+            "texto" : request.form["texto"]
+        }
+        avaliacaoService.editarAvaliacao(empresaId, avaliacao)
+    return redirect(url_for("empresa", empresaId=empresaId))
