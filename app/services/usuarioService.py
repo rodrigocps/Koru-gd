@@ -1,22 +1,24 @@
-import sqlite3
+from flask import make_response
+from sqlite3 import connect, Row
+from app.database import DATABASE_PATH
+import app.services.utils as utils
+import app.exceptions.apiExceptions as exceptions
 
 def adicionarUsuario(usuario) :
-    msg = ""
     try:
-        with sqlite3.connect("banco.db") as conn:
+        with connect("banco.db") as conn:
             cursor = conn.cursor()
             query = "INSERT INTO usuarios(nome, email, senha) VALUES (?, ?, ?)"
 
             cursor.execute(query, (usuario["nome"], usuario["email"], usuario["senha"]))
             conn.commit()
-            msg = "Usuário adicionado com sucesso."
+
+            return make_response({"mensagem" : "Usuário criado com sucesso"}, 201) #CREATED
     except:
-        msg = "Erro ao adicionar usuário."
         conn.rollback()
-        return False, msg
+        return exceptions.throwCreateUsuarioException()
     finally:
         conn.close()
-    return True, msg
 
 def autenticarUsuario(usuario):
     return True

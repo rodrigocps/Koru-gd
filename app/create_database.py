@@ -1,7 +1,8 @@
 import sqlite3
 import json
+from database import DATABASE_PATH
 
-conn = sqlite3.connect("banco.db")
+conn = sqlite3.connect(DATABASE_PATH)
 
 conn.execute("""
 CREATE TABLE IF NOT EXISTS usuarios (
@@ -34,7 +35,7 @@ CREATE TABLE IF NOT EXISTS avaliacoes (
 
 conn.close()
 
-conn = sqlite3.connect("banco.db")
+conn = sqlite3.connect(DATABASE_PATH)
 empresas = json.load(open("./app/static/resources/1100_empresas.json", encoding="utf8"))
 # empresas_ordenadas = sorted(empresas, key=lambda x: x['nome'])
 

@@ -1,50 +1,66 @@
-import sqlite3
+from sqlite3 import connect, Row
+from app.database import DATABASE_PATH
+import app.services.utils as utils
+import app.exceptions.apiExceptions as exceptions
 
-def adicionarAvaliacao(avaliacao, empresaId):
-    msg = ""
+def adicionarAvaliacao(data, empresaId):
     try:
-        with sqlite3.connect("banco.db") as conn:
+        with connect(DATABASE_PATH) as conn:
             cursor = conn.cursor()
+
             query = "INSERT INTO avaliacoes(titulo, texto, empresa_id, autor_id) VALUES (?, ?, ?, ?)"
-            cursor.execute(query, (avaliacao["titulo"], avaliacao["texto"], empresaId, 1))
+            
+            cursor.execute(query, (data["titulo"], data["texto"], empresaId, 1))
+            
             conn.commit()
-            msg = "Avaliação adicionada com sucesso."
-            return True, msg
+
+            avaliacao = data.copy()
+            avaliacao["id"] = cursor.lastrowid
+
+            return avaliacao
     except:
-        msg= "Erro ao adicionar avaliação."
         conn.rollback()
-        return False, msg
-    
+        return exceptions.throwCreateAvaliacaoException()
     finally:
         conn.close()
 
 
 def getAvaliacoes(empresaId):
-    conn = sqlite3.connect("banco.db")
-    conn.row_factory = sqlite3.Row
+    conn = connect(DATABASE_PATH)
+    conn.row_factory = Row
 
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM avaliacoes where empresa_id = {}".format(empresaId))
+
+    query = "SELECT * FROM avaliacoes where empresa_id = ?"
     
-    avaliacoes = cursor.fetchall()
+    cursor.execute(query, (empresaId,))
+    rows = cursor.fetchall()
+
+    avaliacoes = utils.row_list_to_dict_list(rows)
+
     conn.close()
 
     return avaliacoes
 
 def getAvaliacao(empresaId, avaliacaoId):
-    conn = sqlite3.connect("banco.db")
-    conn.row_factory = sqlite3.Row
+    conn = connect("banco.db")
+    conn.row_factory = Row
 
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM avaliacoes where empresa_id = {} AND id = {}".format(empresaId, avaliacaoId))
+    cursor.execute("SELECT * FROM avaliacoes where empresa_id = ? AND id = ?", (empresaId, avaliacaoId))
     
     avaliacao = cursor.fetchone()
     conn.close()
 
-    return avaliacao
+    if(avaliacao):
+        return utils.row_to_dict(avaliacao)
+    else:
+        return exceptions.throwAvaliacaoNotFoundException()
 
 def excluirAvaliacao(empresaId, avaliacaoId):
-    conn = sqlite3.connect("banco.db")
+    avaliacao = getAvaliacao(empresaId, avaliacaoId)
+    
+    conn = connect("banco.db")
 
     cursor = conn.cursor()
     cursor.execute("DELETE FROM avaliacoes WHERE empresa_id = ? and id = ?", (empresaId, avaliacaoId))
@@ -52,11 +68,25 @@ def excluirAvaliacao(empresaId, avaliacaoId):
     conn.commit()
     conn.close()
 
-def editarAvaliacao(empresaId, avaliacao):
-    conn = sqlite3.connect("banco.db")
+    return avaliacao
 
-    cursor = conn.cursor()
-    cursor.execute("UPDATE avaliacoes SET titulo = ?, texto = ? WHERE empresa_id = ? AND id = ?", (avaliacao["titulo"], avaliacao["texto"], empresaId, avaliacao["id"]))
 
-    conn.commit()
-    conn.close()
+def editarAvaliacao(empresaId, avaliacaoId, avaliacao):
+    getAvaliacao(empresaId, avaliacaoId) # Checar se existe a avaliação no Banco.
+    
+    try:
+        with connect(DATABASE_PATH) as conn:
+            conn = connect("banco.db")
+
+            cursor = conn.cursor()
+            cursor.execute("UPDATE avaliacoes SET titulo = ?, texto = ? WHERE empresa_id = ? AND id = ?", (avaliacao["titulo"], avaliacao["texto"], empresaId, avaliacaoId))
+
+            conn.commit()
+            
+            return getAvaliacao(empresaId, avaliacaoId)
+    except:
+        conn.rollback()
+        return exceptions.throwUpdateAvaliacaoException()
+
+    finally:
+        conn.close() 
