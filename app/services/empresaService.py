@@ -1,13 +1,14 @@
 from sqlite3 import connect, Row
 from app.database import DATABASE_PATH
 import app.services.utils as utils
+import app.exceptions.apiExceptions as exceptions
 
 def listarEmpresas(pagina):
     conn = connect("banco.db")
     conn.row_factory = Row
 
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM empresas ORDER BY id LIMIT 10 OFFSET ?;", (((pagina-1) * 10),))
+    cursor.execute("SELECT * FROM empresas ORDER BY id LIMIT 10 OFFSET ?", (((pagina-1) * 10),))
     
     empresas = cursor.fetchall()
     conn.close()
@@ -26,4 +27,7 @@ def getEmpresa(empresaId):
 
     conn.close()
 
-    return utils.row_to_dict(empresa)
+    if(empresa):
+        return utils.row_to_dict(empresa)
+    else:
+        return exceptions.throwEmpresaNotFoundException()

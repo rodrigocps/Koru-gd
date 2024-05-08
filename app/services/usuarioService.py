@@ -1,6 +1,8 @@
+from flask import make_response
 from sqlite3 import connect, Row
 from app.database import DATABASE_PATH
 import app.services.utils as utils
+import app.exceptions.apiExceptions as exceptions
 
 def adicionarUsuario(usuario) :
     try:
@@ -11,10 +13,10 @@ def adicionarUsuario(usuario) :
             cursor.execute(query, (usuario["nome"], usuario["email"], usuario["senha"]))
             conn.commit()
 
-            return {"aviso" : "Usuário cadastrado com sucesso."}
+            return make_response({"mensagem" : "Usuário criado com sucesso"}, 201) #CREATED
     except:
         conn.rollback()
-        return {"erro" : "Erro ao cadastrar usuário."}
+        return exceptions.throwCreateUsuarioException()
     finally:
         conn.close()
 

@@ -1,6 +1,7 @@
 from sqlite3 import connect, Row
 from app.database import DATABASE_PATH
 import app.services.utils as utils
+import app.exceptions.apiExceptions as exceptions
 
 def adicionarAvaliacao(data, empresaId):
     try:
@@ -19,7 +20,7 @@ def adicionarAvaliacao(data, empresaId):
             return avaliacao
     except:
         conn.rollback()
-        return {"erro" : "Erro ao adicionar avaliação."}
+        return exceptions.throwCreateAvaliacaoException()
     finally:
         conn.close()
 
@@ -54,12 +55,10 @@ def getAvaliacao(empresaId, avaliacaoId):
     if(avaliacao):
         return utils.row_to_dict(avaliacao)
     else:
-        return {"erro" : "Avaliação não encontrada."}
+        return exceptions.throwAvaliacaoNotFoundException()
 
 def excluirAvaliacao(empresaId, avaliacaoId):
     avaliacao = getAvaliacao(empresaId, avaliacaoId)
-    if "erro" in avaliacao:
-        return avaliacao["erro"]
     
     conn = connect("banco.db")
 
@@ -73,9 +72,7 @@ def excluirAvaliacao(empresaId, avaliacaoId):
 
 
 def editarAvaliacao(empresaId, avaliacaoId, avaliacao):
-    savedAvaliacao = getAvaliacao(empresaId, avaliacaoId)
-    if "erro" in savedAvaliacao:
-        return savedAvaliacao["erro"]
+    getAvaliacao(empresaId, avaliacaoId) # Checar se existe a avaliação no Banco.
     
     try:
         with connect(DATABASE_PATH) as conn:
@@ -89,7 +86,7 @@ def editarAvaliacao(empresaId, avaliacaoId, avaliacao):
             return getAvaliacao(empresaId, avaliacaoId)
     except:
         conn.rollback()
-        return {"erro" : "Erro ao atualizar a avaliação."}
+        return exceptions.throwUpdateAvaliacaoException()
 
     finally:
         conn.close() 
