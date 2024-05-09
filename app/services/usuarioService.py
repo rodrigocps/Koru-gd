@@ -1,5 +1,5 @@
 from flask import make_response
-from sqlite3 import connect, Row
+from sqlite3 import connect
 from app.database import DATABASE_PATH
 import app.services.utils as utils
 import app.exceptions.apiExceptions as exceptions
@@ -40,15 +40,18 @@ def adicionarUsuario(usuario):
     
     finally:
         conn.close()
-#PUT recebe a atualização do usuario
-def autenticarUsuario(usuario):
-    return True
+
+def getUsuario(id):
+    return ""
+
+def login(login):
+    return "token(?)"
+
+def logout():
+    return {"mensagem" : "Usuário deslogado"}
 
 def atualizarUsuario() :
     return True
 
 def removerUsuario() :
-    return True
-
-def logoutUsuario():
     return True

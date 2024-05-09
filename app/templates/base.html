@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Title{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
+    {% block scripts %}
+    {% endblock %}
 </head>
 <body>
     <header>
@@ -13,7 +15,7 @@
         </div>
         <nav class="">
             <ul>
-                <li><a href="{{ url_for('empresas')}}">Empresas</a></li>
+                <li><a >Empresas</a></li>
                 <li><a href="">Avaliacoes</a></li>
                 <li><a href="">Outros</a></li>
             </ul>
