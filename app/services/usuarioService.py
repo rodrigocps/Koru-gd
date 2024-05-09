@@ -1,12 +1,12 @@
 from flask import make_response
-from sqlite3 import connect, Row
+from sqlite3 import connect
 from app.database import DATABASE_PATH
 import app.services.utils as utils
 import app.exceptions.apiExceptions as exceptions
 
 def adicionarUsuario(usuario) :
     try:
-        with connect("banco.db") as conn:
+        with connect(DATABASE_PATH) as conn:
             cursor = conn.cursor()
             query = "INSERT INTO usuarios(nome, email, senha) VALUES (?, ?, ?)"
 
@@ -19,6 +19,15 @@ def adicionarUsuario(usuario) :
         return exceptions.throwCreateUsuarioException()
     finally:
         conn.close()
+
+def getUsuario(id):
+    return ""
+
+def login(login):
+    return "token(?)"
+
+def logout():
+    return {"mensagem" : "Usuário deslogado"}
 
 def autenticarUsuario(usuario):
     return True
