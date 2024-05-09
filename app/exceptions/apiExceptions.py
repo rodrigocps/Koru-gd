@@ -18,6 +18,11 @@ def throwCreateUsuarioException():
     return throwCreateException({
         "mensagem" : "Houve uma falha ao cadastrar usuário."
     })
+#IAN
+def throwUsuarioExistente():
+    return throwCreateException({
+        "mensagem" : "Usuário já cadastrado."
+    })
 
 ################## READ EXCEPTIONS ##################
 def throwNotFoundException(response):

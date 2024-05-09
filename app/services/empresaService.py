@@ -3,6 +3,8 @@ from app.database import DATABASE_PATH
 import app.services.utils as utils
 import app.exceptions.apiExceptions as exceptions
 
+# 1- É aqui que vai uma função ou método para só acessar esses registros caso esteja logado ?
+
 def listarEmpresas(pagina):
     conn = connect("banco.db")
     conn.row_factory = Row
