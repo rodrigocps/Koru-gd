@@ -12,7 +12,7 @@ Este repositório contém um guia simples sobre como configurar e ativar um ambi
 1. Clone este repositório para o seu sistema local, se ainda não o fez.
 
     ```bash
-    git clone https://github.com/seu_usuario/seu_repositorio.git
+    git clone https://github.com//rodrigocps/Koru-gd.git
     ```
 
 2. Navegue até o diretório do repositório clonado.
@@ -64,6 +64,11 @@ As dependencias que voce vai precisar instalar são as seguintes:
 - python-dotenv:
     ```bash
     pip install python-dotenv
+    ```
+
+- marshmallow:
+    ```bash
+    pip install marshmallow
     ```
 ## Observações
 
