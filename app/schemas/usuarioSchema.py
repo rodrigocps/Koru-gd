@@ -6,3 +6,7 @@ class UsuarioSchema(Schema):
     email = fields.Email(required=True)
     senha = fields.String(required=True, validate=validate.Length(min=8))
 
+class UsuarioLoginSchema(Schema):
+    email = fields.Email(required=True)
+    senha = fields.String(required=True, validate=validate.Length(min=8))
+

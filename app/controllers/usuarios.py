@@ -1,6 +1,6 @@
 from flask import request, render_template
 from app.services import usuarioService as service
-from app.schemas.schemasValidation import validate, getUsuarioSchema
+from app.schemas.schemasValidation import validate, getLoginSchema
 
 USUARIOS_ENDPOINT = "/usuarios/"
 
@@ -26,8 +26,8 @@ class Usuario:
             return service.adicionarUsuario(usuario)
         
         @app.route(USUARIOS_ENDPOINT + "auth", methods=["POST"])
-        def login_usuario(data):
-            login = data.json
+        def login_usuario():
+            login = validate(request.json, getLoginSchema())
             return service.login(login)
         
         @app.route(USUARIOS_ENDPOINT + "<int:id>")

@@ -20,3 +20,5 @@ def getAvaliacaoSchema():
 
 def getUsuarioSchema():
     return usuarioSchema.UsuarioSchema()
+def getLoginSchema():
+    return usuarioSchema.UsuarioLoginSchema()
