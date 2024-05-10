@@ -1,4 +1,4 @@
-from flask import make_response
+from flask import make_response,request
 from sqlite3 import connect
 from app.database import DATABASE_PATH
 import app.services.utils as utils
@@ -7,12 +7,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from flask import session
 from app.database import DATABASE_PATH
 import sqlite3
-'''
-1- função logout aqui
-2 - O que fará atualização de usuário? alterar nome? alterar senha? alterar email?
-3-
-4- Utilizo a hash aqui ? 
-'''
 
 def adicionarUsuario(usuario):
     session.clear()
@@ -49,28 +43,31 @@ def adicionarUsuario(usuario):
 
 def getUsuario(id):
     return ""
-
+#Concertar erro código 200 em usuário não logado
 def login(usuario):
     session.clear()
     try:
         with connect(DATABASE_PATH) as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM usuarios WHERE email =?", (usuario["email"],))
+            cursor.execute("SELECT * FROM usuarios WHERE email = ?", (usuario["email"],))
             row = cursor.fetchone()
-            if row[0] != 1 or not check_password_hash(row)[0]["hash"].fetchall():
+            if row is None or not check_password_hash(row[3], usuario["senha"]):
                 return "Usuário / senha incorreta"
-            session["user_id"] = row[0]
+            session["user_id"] = row[0]  # Supondo que "id" seja o campo que contém o ID do usuário
             print(session["user_id"])
-            return make_response({"mensagem": "Usuário logado com sucesso"}, 201)  # CREATED
+            return make_response({"mensagem": "Usuário logado com sucesso"}, 200)  # CREATED
     except sqlite3.Error as e:
         print("Erro ao logar o usuário:", e)
-        conn.rollback()
-        return exceptions.throwUsuárioNotFoundException()    
+        if conn.in_transaction:
+            conn.rollback()
+        return exceptions.throwUsuárioNotFoundException()
     finally:
         conn.close()
 
+
+
 def logout():
-    #clear.session()
+    session.clear()
     return {"mensagem" : "Usuário deslogado"}
 
 def atualizarUsuario() :

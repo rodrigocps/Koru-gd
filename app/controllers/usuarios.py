@@ -1,6 +1,6 @@
 from flask import request, render_template
 from app.services import usuarioService as service
-from app.schemas.schemasValidation import validate, getLoginSchema
+from app.schemas.schemasValidation import validate, getLoginSchema, getUsuarioSchema
 
 USUARIOS_ENDPOINT = "/usuarios/"
 
