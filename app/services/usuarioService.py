@@ -15,6 +15,7 @@ def adicionarUsuario(usuario):
             cursor = conn.cursor()
             cursor.execute("SELECT COUNT(*) FROM usuarios WHERE email=?", (usuario["email"],))
             row = cursor.fetchone()
+
             if row[0] == 0:
                 hashed_password = generate_password_hash(usuario["senha"])
 

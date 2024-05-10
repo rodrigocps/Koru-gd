@@ -37,7 +37,8 @@ class Usuario:
         def logout_usuario():
             return service.logout()
         
-        ## FRONTEND ##
+        ################## FRONTEND ################## 
+        
         @app.route("/signup", methods=["GET"])
         def registro():
             return render_template("registro.html")

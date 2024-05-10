@@ -27,6 +27,8 @@ class Avaliacao:
         @app.route(AVALIACOES_ENDPOINT + "<int:avaliacaoId>", methods=['DELETE'])
         def delete_avaliacao(empresaId, avaliacaoId):
             return service.excluirAvaliacao(empresaId, avaliacaoId)
-        
-        
+
+
+        ################## FRONTEND ################## 
+
         

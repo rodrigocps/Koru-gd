@@ -10,7 +10,7 @@ def listarEmpresas(pagina):
     conn.row_factory = Row
 
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM empresas ORDER BY id LIMIT 10 OFFSET ?", (((pagina-1) * 10),))
+    cursor.execute("SELECT * FROM empresas ORDER BY id LIMIT 20 OFFSET ?", (((pagina-1) * 10),))
     
     empresas = cursor.fetchall()
     conn.close()

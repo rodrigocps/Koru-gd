@@ -6,9 +6,16 @@ from app.controllers.avaliacoes import Avaliacao
 from app.controllers.empresas import Empresa
 from app.controllers.usuarios import Usuario
 
+from flask import render_template
+
 Usuario.register_routes(app)
 Avaliacao.register_routes(app)
 Empresa.register_routes(app)
+
+@app.route("/", methods=["GET"])
+@app.route("/index", methods=["GET"])
+def home():
+    return render_template("index.html")
 
 
 # AS ROTAS ABAIXO ESTÃO NA ARQUITETURA MVC. 
