@@ -39,7 +39,7 @@ class Usuario:
         
         ## FRONTEND ##
         @app.route("/signup", methods=["GET"])
-        def login():
+        def registro():
             return render_template("registro.html")
         
         # Perfil de usuário

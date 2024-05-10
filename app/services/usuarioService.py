@@ -43,7 +43,7 @@ def adicionarUsuario(usuario):
 
 def getUsuario(id):
     return ""
-#Concertar erro código 200 em usuário não logado
+
 def login(usuario):
     session.clear()
     try:
@@ -51,8 +51,10 @@ def login(usuario):
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM usuarios WHERE email = ?", (usuario["email"],))
             row = cursor.fetchone()
+
             if row is None or not check_password_hash(row[3], usuario["senha"]):
-                return "Usuário / senha incorreta"
+                return make_response({"mensagem": "Usuário / senha incorreta."}, 401) # UNAUTHORIZED/UNAUTHENTICATED
+            
             session["user_id"] = row[0]  # Supondo que "id" seja o campo que contém o ID do usuário
             print(session["user_id"])
             return make_response({"mensagem": "Usuário logado com sucesso"}, 200)  # CREATED
