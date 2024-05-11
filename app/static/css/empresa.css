@@ -1,3 +1,40 @@
 #setor-empresa {
     font-weight: 500;
 }
+
+#avaliacao-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: solid 1px black;
+    padding: 10px 25px;
+    width: 50vw;
+}
+
+input#titulo, .edit-titulo-input{
+    width: 100%;
+}
+
+textarea#texto, .edit-text-input{
+    width: 100%;
+    resize: none;
+    min-height: 150px;
+}
+
+.edit-text-input{
+    min-height: 80px;
+}
+
+#avaliacoes-list {
+    list-style: none;
+    margin: 0;
+    margin-left: 10px;
+    padding: 0;
+    width: 50vw;
+}
+
+.avaliacao-li {
+    border-bottom: solid 1px black;
+    padding-left: 10px;
+}
