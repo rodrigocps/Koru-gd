@@ -1,0 +1,61 @@
+ul.lista-empresas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+}
+
+.empresa-li {
+    position: relative;
+    width: 60%;
+}
+
+.empresa-element {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    text-decoration: none;
+    color: black;
+    
+    width: 100%;
+    border : solid 1px gray;
+    padding: 10px;
+}
+
+.empresa-element:hover {
+    background-color: rgba(0,0,0,.05);
+    cursor: pointer;
+}
+
+.empresa-name {
+    font-weight: bold;
+}
+
+#search-bar {
+    position: sticky;
+    top: -20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    margin : 10px 0;
+    padding: 50px;
+    background-color: white;
+    z-index: 100;
+}
+
+#search-bar > label {
+    font-weight: bold;
+}
+
+#search-bar > input {
+    min-width: 500px;
+    height: 20px;
+    padding-left: 10px;
+}

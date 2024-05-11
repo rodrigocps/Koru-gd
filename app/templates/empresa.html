@@ -1,38 +1,19 @@
 {% extends "base.html" %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/empresa.css') }}">
+{% endblock%}
+
+
+{% block scripts %}
+    <script src="{{url_for('static', filename='js/empresa.js')}}"></script>
+{% endblock%}
+
 {% block content %}
-
-{% if empresa: %}
-    <h1>{{empresa.nome}}</h1>
-    <h3>{{empresa.setor}}</h3>
-
-    <a href={{url_for("adicionar_avaliacao", empresaId = empresa.id)}}>Adicionar avaliação</a>
-    <br/>
-    <a href={{url_for("empresas", pagina=pagina)}}>Voltar para a lista de empresas</a>
-
-    {% if avaliacoes: %}
-        <h2>Avaliações</h2>
-        <hr/>
-        {% for avaliacao in avaliacoes: %}
-            <h3>{{avaliacao.titulo}}</h3>
-            <p>{{avaliacao.texto}}</p>
-            <a 
-            href={{url_for("editar_avaliacao", avaliacaoId = avaliacao.id, empresaId = empresa.id)}}
-            >
-            Editar
-            </a>
-
-            <a 
-            href={{url_for("excluir_avaliacao", avaliacaoId = avaliacao.id, empresaId = empresa.id)}}
-            onclick="return confirm('Tem certeza que deseja excluir esta avaliação?')"
-            >
-            Excluir
-            </a>
-
-            <hr/>
-            <br/>
-        {% endfor %}
-    {% endif %}
-{%endif%}
-
+    <h1 id="nome-empresa"></h1>
+    <h3 id="setor-empresa"></h3>
+    </hr>
+    </br>
+    <h2>Avaliações</h2>
+    <div id="avaliacoes"></div>
 {% endblock%}
