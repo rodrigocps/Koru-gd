@@ -2,7 +2,7 @@ from flask import request
 from app.services import avaliacaoService as service
 from app.schemas.schemasValidation import validate, getAvaliacaoSchema
 
-AVALIACOES_ENDPOINT = "/empresas/<int:empresaId>/avaliacoes/"
+AVALIACOES_ENDPOINT = "/api/empresas/<int:empresaId>/avaliacoes/"
 
 class Avaliacao:
     def register_routes(app):
@@ -27,8 +27,5 @@ class Avaliacao:
         @app.route(AVALIACOES_ENDPOINT + "<int:avaliacaoId>", methods=['DELETE'])
         def delete_avaliacao(empresaId, avaliacaoId):
             return service.excluirAvaliacao(empresaId, avaliacaoId)
-
-
-        ################## FRONTEND ################## 
 
         

@@ -6,7 +6,7 @@ function fetchEmpresas (pagina, search) {
     if(search)
         params.append("search", search)
 
-    let fetchUrl = "/empresas"
+    let fetchUrl = "/api/empresas"
 
     if(pagina||search)
         fetchUrl = fetchUrl + "?" + params.toString()

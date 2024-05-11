@@ -3,7 +3,7 @@ const params = new URLSearchParams(window.location.search);
 const id = params.get('id');
 
 if(id) {
-    fetch("/empresas/" + id)
+    fetch("/api/empresas/" + id)
     .then(response => {
         if(response.ok)
             return response.json()
@@ -15,6 +15,6 @@ if(id) {
         const setor = document.getElementById("setor-empresa")
 
         nome.textContent = data.nome
-        setor.textContent = data.setor
+        setor.textContent = data.setora
     }).catch(error => console.log(error))
 }

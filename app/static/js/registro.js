@@ -12,7 +12,7 @@ function submitForm() {
     };
   
     // Envia os dados para a API usando fetch
-    fetch('/usuarios', {
+    fetch('/api/usuarios', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -2,7 +2,7 @@ from flask import request, render_template
 from app.services import usuarioService as service
 from app.schemas.schemasValidation import validate, getLoginSchema, getUsuarioSchema
 
-USUARIOS_ENDPOINT = "/usuarios/"
+USUARIOS_ENDPOINT = "/api/usuarios/"
 
 '''
 1- Qual a página inicial?
