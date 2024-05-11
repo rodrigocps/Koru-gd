@@ -1,3 +1,5 @@
+/* LISTA DE EMPRESAS */
+
 ul.lista-empresas {
     display: flex;
     flex-direction: column;
@@ -21,7 +23,7 @@ ul.lista-empresas {
     flex-wrap: wrap;
     text-decoration: none;
     color: black;
-    
+    border-radius: 5px;
     width: 100%;
     border : solid 1px gray;
     padding: 10px;
@@ -36,26 +38,47 @@ ul.lista-empresas {
     font-weight: bold;
 }
 
-#search-bar {
-    position: sticky;
-    top: -20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3px;
-    margin : 10px 0;
-    padding: 50px;
-    background-color: white;
-    z-index: 100;
+/* CONTENT */
+
+.content {
+    margin-top: 150px;
+    margin-left: 60px;
+}
+.content h1 {
+    font-size: 50px;
 }
 
-#search-bar > label {
-    font-weight: bold;
+
+/* BARRA DE PESQUISA */
+
+.search-box {
+    max-width: 600px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+#search-bar {
+    display: inline-block;
+    position: relative;
 }
 
 #search-bar > input {
-    min-width: 500px;
-    height: 20px;
-    padding-left: 10px;
+    width: 400px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 5px;
+    outline: none;
+}
+
+#search-bar > button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #009960;
+    color: #fff;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    padding: 10px 20px;
 }

@@ -16,15 +16,23 @@
 
 
 {% block content %}
-    <div id="search-bar">
-        <label for="search">Pesquisar: </label>
-        <input 
-            type="text"
-            id="search"
-            name="search"
-        />
-        <button type = "button" onclick="search()">Pesquisar</button>
+
+    <div class="content">
+        <h1>Seus colegas de trabalho estao aqui</h1>
+        <h2>Sinta-se a vontade para avaliar</h2>
+        <div class="search-box">
+        <div id="search-bar">
+            <input 
+                type="text"
+                id="search"
+                name="search"
+                placeholder="Pesquisar empresas"
+            />
+            <button type = "button" onclick="search()">Pesquisar</button>
+        </div>
+        </div>
+        <ul class="lista-empresas"></ul>
     </div>
-    <ul class="lista-empresas"></ul>
+
 
 {% endblock %}
