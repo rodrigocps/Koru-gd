@@ -1,6 +1,7 @@
 from flask import request, render_template
-from app.services import usuarioService as service
+from app.services import usuarioService as service, authService
 from app.schemas.schemasValidation import validate, getLoginSchema, getUsuarioSchema
+
 
 USUARIOS_ENDPOINT = "/api/usuarios/"
 
@@ -30,13 +31,17 @@ class Usuario:
             login = validate(request.json, getLoginSchema())
             return service.login(login)
         
-        @app.route(USUARIOS_ENDPOINT + "<int:id>")
+        @app.route(USUARIOS_ENDPOINT + "<int:id>", methods=["GET"])
         def get_usuario(id):
             return service.getUsuario(id)
-        @app.route(USUARIOS_ENDPOINT + "logout", methods =["get"])
+        
+        @app.route(USUARIOS_ENDPOINT + "logout", methods = ["POST"])
         def logout_usuario():
             return service.logout()
         
+        @app.route(USUARIOS_ENDPOINT + "validate", methods = ["GET"])
+        def validate_usuario():
+            return authService.validateLogin()
         ################## FRONTEND ################## 
         
         @app.route("/signup", methods=["GET"])
