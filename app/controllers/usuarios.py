@@ -33,7 +33,7 @@ class Usuario:
         @app.route(USUARIOS_ENDPOINT + "<int:id>")
         def get_usuario(id):
             return service.getUsuario(id)
-        
+        @app.route(USUARIOS_ENDPOINT + "logout", methods =["get"])
         def logout_usuario():
             return service.logout()
         
