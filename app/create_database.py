@@ -71,7 +71,7 @@ def checkIfEmpresasTableIsEmpty():
         return True
 
 def buildDb():
-    print("=> Construindo DB (Se não existir)...")
+    print("=> Construindo BD (Se não existir)...")
     buildTables()
 
     if checkIfEmpresasTableIsEmpty():
