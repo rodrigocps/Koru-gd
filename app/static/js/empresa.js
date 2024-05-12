@@ -59,27 +59,10 @@ function renderAvaliacoes() {
                         li.appendChild(title)
                         li.appendChild(text)
                         li.appendChild(authorName)
-    
-                        const editButton = document.createElement("button")
-                        editButton.className = "edit-button"
-                        editButton.type = "button"
-                        editButton.textContent = "Editar"
-                        editButton.addEventListener("click", () => editarAvaliacao(li, empresaId, avaliacao.id, avaliacao.titulo, avaliacao.texto))
-    
-                        const deleteButton = document.createElement("button")
-                        deleteButton.className = "delete-button"
-                        deleteButton.type = "button"
-                        deleteButton.textContent = "Excluir"
-                        deleteButton.addEventListener("click", () => deletarAvaliacao(empresaId, avaliacao.id))
-    
-                        const buttonsdiv = document.createElement("div")
-                        buttonsdiv.className = "avaliacao-buttons-div"
-    
-                        buttonsdiv.appendChild(editButton)
-                        buttonsdiv.appendChild(deleteButton)
-    
-                        li.appendChild(buttonsdiv)
-    
+
+                        if(avaliacao.isClientOwner) 
+                            renderButtonsDiv(li)
+
                         list.appendChild(li)
                     }
                 });
@@ -200,4 +183,29 @@ function deletarAvaliacao(empresaId, avaliacaoId) {
 
 function compararPorId(a, b) {
     return b.id - a.id;
+}
+
+function renderButtonsDiv(li) {
+    user = localStorage.getItem("user")
+    if(user) {
+        const buttonsdiv = document.createElement("div")
+        buttonsdiv.className = "avaliacao-buttons-div"
+
+        const editButton = document.createElement("button")
+        editButton.className = "edit-button"
+        editButton.type = "button"
+        editButton.textContent = "Editar"
+        editButton.addEventListener("click", () => editarAvaliacao(li, empresaId, avaliacao.id, avaliacao.titulo, avaliacao.texto))
+
+        const deleteButton = document.createElement("button")
+        deleteButton.className = "delete-button"
+        deleteButton.type = "button"
+        deleteButton.textContent = "Excluir"
+        deleteButton.addEventListener("click", () => deletarAvaliacao(empresaId, avaliacao.id))
+    
+        buttonsdiv.appendChild(editButton)
+        buttonsdiv.appendChild(deleteButton)
+    
+        li.appendChild(buttonsdiv)
+    }
 }

@@ -54,9 +54,20 @@ def throwEmpresaNotFoundException():
     })
 
 ################## UPDATE EXCEPTIONS ##################
+def throwUpdateException(response):
+    return abort(getJsonifiedResponseWithStatusCode(response, 400))
+
+def throwUnauthorizedUpdateException(response):
+    return abort(getJsonifiedResponseWithStatusCode(response, 401))
+
 def throwUpdateAvaliacaoException():
     return throwCreateException({
         "mensagem" : "Houve uma falha ao atualizar a avaliação."
+    })
+
+def throwUnauthorizedUpdateAvaliacaoException():
+    return throwUnauthorizedUpdateException({
+        "mensagem" : "Somente o autor da avaliação pode alterá-la."
     })
 
 def throwUpdateUsuarioException():
@@ -65,13 +76,29 @@ def throwUpdateUsuarioException():
     })
 
 ################## DELETE EXCEPTIONS ##################
+def throwDeleteException(response):
+    return abort(getJsonifiedResponseWithStatusCode(response, 400))
+
+def throwUnauthorizedDeleteException(response):
+    return abort(getJsonifiedResponseWithStatusCode(response, 401))
 
 def throwDeleteAvaliacaoException():
-    return throwCreateException({
+    return throwDeleteException({
         "mensagem" : "Houve uma falha ao excluir a avaliação."
     })
 
+def throwDeleteAvaliacaoException():
+    return throwDeleteException({
+        "mensagem" : "Houve uma falha ao excluir a avaliação."
+    })
+
+def throwUnauthorizedDeleteAvaliacaoException():
+    return throwUnauthorizedDeleteException({
+        "mensagem" : "Somente o autor da avaliação pode deletá-la."
+    })
+
 def throwDeleteUsuarioException():
-    return throwCreateException({
+    return throwDeleteException({
         "mensagem" : "Houve uma falha ao excluir o usuário."
     })
+    

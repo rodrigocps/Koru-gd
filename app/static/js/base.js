@@ -36,6 +36,7 @@ function validateLogin() {
     fetch("/api/usuarios/validate")
         .then(response => {
             if (response.status === 401) {
+                localStorage.setItem("user", null)
                 renderNotAuthenticated();
                 return false
             }
@@ -46,7 +47,10 @@ function validateLogin() {
             
         })
         .then(data => {
-            if(data) renderAuthenticated(data);
+            if(data) {
+                localStorage.setItem("user", data)
+                renderAuthenticated(data);
+            }
         })
         .catch(error => {
             console.error("Erro durante a validação de login:", error);

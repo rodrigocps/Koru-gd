@@ -44,7 +44,23 @@ def getAvaliacoes(empresaId):
 
     conn.close()
 
-    return avaliacoes
+    if "user" in session:
+        user = session["user"]
+        userAvaliacoes = getUserAvaliacoes(empresaId, user["id"])
+
+        avReturn = []
+
+        for av in avaliacoes:
+            for uav in userAvaliacoes:
+                if(uav["id"]== av["id"]):
+                    av["isClientOwner"] = True
+            
+            avReturn.append(av)
+
+        return avReturn
+
+    else:
+        return avaliacoes
 
 def getAvaliacao(empresaId, avaliacaoId):
     conn = connect("banco.db")
@@ -65,6 +81,10 @@ def getAvaliacao(empresaId, avaliacaoId):
 
 def excluirAvaliacao(empresaId, avaliacaoId):
     avaliacao = getAvaliacao(empresaId, avaliacaoId)
+    user = auth.validateLogin()
+
+    if(user["email"] != avaliacao["autor_email"]):
+        return exceptions.throwUnauthorizedDeleteAvaliacaoException();
     
     conn = connect("banco.db")
 
@@ -78,7 +98,12 @@ def excluirAvaliacao(empresaId, avaliacaoId):
 
 
 def editarAvaliacao(empresaId, avaliacaoId, avaliacao):
-    getAvaliacao(empresaId, avaliacaoId) # Checar se existe a avaliação no Banco.
+    avaliacao = getAvaliacao(empresaId, avaliacaoId) # Checar se existe a avaliação no Banco.
+    user = auth.validateLogin()
+    
+    if(user["email"] != avaliacao["autor_email"]):
+        return exceptions.throwUnauthorizedUpdateAvaliacaoException();
+
     
     try:
         with connect(DATABASE_PATH) as conn:
@@ -96,3 +121,26 @@ def editarAvaliacao(empresaId, avaliacaoId, avaliacao):
 
     finally:
         conn.close() 
+
+def getUserAvaliacoes(empresaId, userId):
+    conn = connect(DATABASE_PATH)
+    conn.row_factory = Row
+
+    cursor = conn.cursor()
+
+    query = '''
+        SELECT av.id, av.empresa_id, av.titulo, av.texto, u.nome as autor_name, u.email as autor_email
+        FROM avaliacoes av 
+        LEFT JOIN usuarios u 
+        ON u.id = av.autor_id 
+        WHERE av.empresa_id = ? AND autor_id = ?
+    '''
+    
+    cursor.execute(query, (empresaId,userId))
+    rows = cursor.fetchall()
+
+    avaliacoes = utils.row_list_to_dict_list(rows)
+
+    conn.close()
+
+    return avaliacoes
