@@ -18,6 +18,7 @@ def home():
     return render_template("index.html")
 
 
+
 # AS ROTAS ABAIXO ESTÃO NA ARQUITETURA MVC. 
 # ROTAS DESCONTINUADAS POR DECISÃO DE MUDAR PARA ARQUITETURA REST API.
 

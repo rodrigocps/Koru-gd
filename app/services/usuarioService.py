@@ -28,7 +28,7 @@ def adicionarUsuario(usuario):
                 cursor.execute("SELECT * FROM usuarios WHERE email = ?", (usuario["email"],))
                 new_user = cursor.fetchone()
                 if new_user:
-                    session["user"] = {"id":row[0], "nome":row[1], "email":row[2]}
+                    session["user"] = {"id":new_user[0], "nome":new_user[1], "email":new_user[2]}
                     print(session)
                 return make_response({"mensagem": "Usuário criado com sucesso"}, 201)  # CREATED
             else:

@@ -47,6 +47,10 @@
     color: #000;
 }
 
+.main-content {
+    margin-top: 60px;
+}
+
 @media (min-width: 991px) {
     .nav-link::before{
         content: "";
