@@ -70,12 +70,55 @@ function renderAvaliacoes() {
         }).catch(error => console.log(error))
 }
 
+function renderAddAvaliacao(){
+    const avaliacoesDiv = document.getElementById("avaliacoes-div")
+        if(avaliacoesDiv) {
+            const user = localStorage.getItem("user")
+            if(user){
+                const form = `
+                    <div class="avaliacoes-div>"
+                        <h3>Adicione uma avaliação</h3>
+                        <label for="titulo">Digite o título: </label>
+                        <input 
+                            id="titulo" 
+                            name="titulo"
+                            type="text" 
+                            required
+                        />
+                        
+                        <label for="texto">Digite o texto: </label>
+                        <textarea 
+                            id="texto" 
+                            name="texto" 
+                            required
+                        >{{texto}}</textarea>
+                        
+                        <button type="button" onclick="addAvaliacao()">Enviar</button>
+                    </div>
+                `
+                const avaliacoesForm = document.createElement("div")
+                avaliacoesForm.className = "avaliacoes-form"
+                avaliacoesForm.innerHTML = form
+            }
+            else {
+                avaliacoesDiv.innerHTML = `
+                    <div class="login-avaliacoes-div">
+                        <p class="add-avaliacao-text">Faça login para adicionar uma avaliação</p>
+                        <a href="/login" class="login-button">Entrar</a>
+                    </div>
+                `
+            }
+
+        }
+    
+}
+
 function addAvaliacao() {
     const params = new URLSearchParams(window.location.search);
     const empresaId = params.get('id');
     
-    const titulo = document.querySelector("#avaliacao-div > #titulo")
-    const texto = document.querySelector("#avaliacao-div > #texto")
+    const titulo = document.querySelector("#avaliacao-form > #titulo")
+    const texto = document.querySelector("#avaliacao-form > #texto")
     const avaliacao = {
         titulo : titulo.value,
         texto : texto.value

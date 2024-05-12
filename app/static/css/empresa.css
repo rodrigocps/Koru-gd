@@ -2,7 +2,7 @@
     font-weight: 500;
 }
 
-#avaliacao-div {
+#avaliacao-form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -37,4 +37,8 @@ textarea#texto, .edit-text-input{
 .avaliacao-li {
     border-bottom: solid 1px black;
     padding-left: 10px;
+}
+
+.login-avaliacoes-div {
+    
 }
