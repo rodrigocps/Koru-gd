@@ -51,10 +51,14 @@ function renderAvaliacoes() {
     
                         const text = document.createElement("p")
                         text.textContent = avaliacao.texto
+
+                        const authorName = document.createElement("span")
+                        authorName.className = "avaliacao-author-name"
+                        authorName.textContent = "Author: " + avaliacao.autor_name
     
                         li.appendChild(title)
                         li.appendChild(text)
-    
+                        li.appendChild(authorName)
     
                         const editButton = document.createElement("button")
                         editButton.className = "edit-button"

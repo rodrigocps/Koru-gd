@@ -1,16 +1,19 @@
-from sqlite3 import connect, Row
+from sqlite3 import connect, Row, Error
+from flask import session
 from app.database import DATABASE_PATH
 import app.services.utils as utils
 import app.exceptions.apiExceptions as exceptions
+import app.services.authService as auth
 
 def adicionarAvaliacao(data, empresaId):
+    user = auth.validateLogin()
     try:
         with connect(DATABASE_PATH) as conn:
             cursor = conn.cursor()
 
             query = "INSERT INTO avaliacoes(titulo, texto, empresa_id, autor_id) VALUES (?, ?, ?, ?)"
-            
-            cursor.execute(query, (data["titulo"], data["texto"], empresaId, 1))
+
+            cursor.execute(query, (data["titulo"], data["texto"], empresaId, user["id"],))
             
             conn.commit()
 
@@ -18,8 +21,9 @@ def adicionarAvaliacao(data, empresaId):
             avaliacao["id"] = cursor.lastrowid
 
             return avaliacao
-    except:
+    except Error as e:
         conn.rollback()
+        print(e)
         return exceptions.throwCreateAvaliacaoException()
     finally:
         conn.close()
@@ -31,7 +35,7 @@ def getAvaliacoes(empresaId):
 
     cursor = conn.cursor()
 
-    query = "SELECT * FROM avaliacoes where empresa_id = ?"
+    query = "SELECT av.empresa_id, av.titulo, av.texto, u.nome as autor_name, u.email as autor_email FROM avaliacoes av LEFT JOIN usuarios u ON u.id = av.autor_id WHERE av.empresa_id = ?"
     
     cursor.execute(query, (empresaId,))
     rows = cursor.fetchall()
@@ -47,7 +51,9 @@ def getAvaliacao(empresaId, avaliacaoId):
     conn.row_factory = Row
 
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM avaliacoes where empresa_id = ? AND id = ?", (empresaId, avaliacaoId))
+    query = "SELECT av.empresa_id, av.titulo, av.texto, u.nome as autor_name, u.email as autor_email FROM avaliacoes av LEFT JOIN usuarios u ON u.id = av.autor_id WHERE av.empresa_id = ? AND av.id = ?"
+
+    cursor.execute(query, (empresaId, avaliacaoId))
     
     avaliacao = cursor.fetchone()
     conn.close()

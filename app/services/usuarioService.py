@@ -25,10 +25,10 @@ def adicionarUsuario(usuario):
                 conn.commit()                
 
                 # Logar novo usuário
-                cursor.execute("SELECT * FROM usuarios WHERE email =?", (usuario["email"],))
+                cursor.execute("SELECT * FROM usuarios WHERE email = ?", (usuario["email"],))
                 new_user = cursor.fetchone()
                 if new_user:
-                    session["user_id"] = row[0]
+                    session["user"] = {"id":row[0], "nome":row[1], "email":row[2]}
                     print(session)
                 return make_response({"mensagem": "Usuário criado com sucesso"}, 201)  # CREATED
             else:
@@ -50,14 +50,15 @@ def login(usuario):
     try:
         with connect(DATABASE_PATH) as conn:
             cursor = conn.cursor()
+
             cursor.execute("SELECT * FROM usuarios WHERE email = ?", (usuario["email"],))
             row = cursor.fetchone()
 
             if row is None or not check_password_hash(row[3], usuario["senha"]):
                 return make_response({"mensagem": "Usuário / senha incorreta."}, 401) # UNAUTHORIZED/UNAUTHENTICATED
-            
-            session["user_id"] = row[0]  # Supondo que "id" seja o campo que contém o ID do usuário
-            print(session["user_id"])
+
+            session["user"] = {"id":row[0], "nome":row[1], "email":row[2]}
+            print(session)
             return make_response({"mensagem": "Usuário logado com sucesso"}, 200)  # CREATED
     except sqlite3.Error as e:
         print("Erro ao logar o usuário:", e)
