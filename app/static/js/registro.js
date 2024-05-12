@@ -1,3 +1,10 @@
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById("signupBtn").addEventListener("click", (event) => {
+    event.preventDefault();
+    submitForm();
+  })
+})
+
 function submitForm() {
     // Pega os valores dos campos do formulário
     var nome = document.getElementById("nome").value;
@@ -22,13 +29,12 @@ function submitForm() {
     .then(response => {
       if (!response.ok) {
         // tratamento do erro
-        throw new Error('Erro ao enviar o formulário');
+        throw new Error('Erro ao cadastrar o usuário.');
       }
       return response.json();
     })
     .then(data => {
-        
-        // redirecionar para pagina logada
+        window.location.href = "/"
     })
     .catch(error => {
       console.error('Erro:', error);
