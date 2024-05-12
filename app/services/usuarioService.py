@@ -71,6 +71,8 @@ def login(usuario):
 
 
 def logout():
+    session["user"] = {"id":row[0], "nome":row[1], "email":row[2]}
+    print(session)
     session.clear()
     return {"mensagem" : "Usuário deslogado"}
 
