@@ -35,7 +35,7 @@ def getAvaliacoes(empresaId):
 
     cursor = conn.cursor()
 
-    query = "SELECT av.empresa_id, av.titulo, av.texto, u.nome as autor_name, u.email as autor_email FROM avaliacoes av LEFT JOIN usuarios u ON u.id = av.autor_id WHERE av.empresa_id = ?"
+    query = "SELECT av.id, av.empresa_id, av.titulo, av.texto, u.nome as autor_name, u.email as autor_email FROM avaliacoes av LEFT JOIN usuarios u ON u.id = av.autor_id WHERE av.empresa_id = ?"
     
     cursor.execute(query, (empresaId,))
     rows = cursor.fetchall()
@@ -51,7 +51,7 @@ def getAvaliacao(empresaId, avaliacaoId):
     conn.row_factory = Row
 
     cursor = conn.cursor()
-    query = "SELECT av.empresa_id, av.titulo, av.texto, u.nome as autor_name, u.email as autor_email FROM avaliacoes av LEFT JOIN usuarios u ON u.id = av.autor_id WHERE av.empresa_id = ? AND av.id = ?"
+    query = "SELECT av.id, av.empresa_id, av.titulo, av.texto, u.nome as autor_name, u.email as autor_email FROM avaliacoes av LEFT JOIN usuarios u ON u.id = av.autor_id WHERE av.empresa_id = ? AND av.id = ?"
 
     cursor.execute(query, (empresaId, avaliacaoId))
     
