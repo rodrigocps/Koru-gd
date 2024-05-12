@@ -12,7 +12,7 @@ class Avaliacao:
             return service.adicionarAvaliacao(avaliacao, empresaId)
 
         @app.route(AVALIACOES_ENDPOINT, methods=['GET'])
-        def list_avaliacao(empresaId):
+        def list_avaliacoes(empresaId):
             return service.getAvaliacoes(empresaId)
         
         @app.route(AVALIACOES_ENDPOINT + "<int:avaliacaoId>", methods=['GET'])

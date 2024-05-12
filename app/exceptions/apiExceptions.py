@@ -5,6 +5,16 @@ def getJsonifiedResponseWithStatusCode(response, statusCode):
     response.status_code = statusCode
     return response
 
+################## AUTH EXCEPTIONS ##################
+def throwUnauthorizedException(response):
+    return abort(getJsonifiedResponseWithStatusCode(response, 401))
+
+def throwUserNotAuthenticatedException():
+    throwUnauthorizedException({
+        "mensagem" : "O usuário deve estar logado para executar essa operação."
+    })
+
+
 ################## CREATE EXCEPTIONS ##################
 def throwCreateException(response):
     return abort(getJsonifiedResponseWithStatusCode(response, 400))
