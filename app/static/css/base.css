@@ -1,3 +1,15 @@
+/*Main*/
+body, html{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body {
+    padding-bottom: 60px;
+}
+
+
 /*Estilo Navbar*/
 
 .navbar {
@@ -49,7 +61,8 @@
 }
 
 .main-content {
-    margin-top: 60px;
+    background: #ececec;
+    padding: 60px;
 }
 
 @media (min-width: 991px) {
@@ -72,7 +85,7 @@
     }
 }
 
-/* FOOTER */
+/* FOOTER 
 
 footer {
     background: rgb(255,255,255);
@@ -80,6 +93,7 @@ footer {
     height: 50px;
     padding: 10px;
     margin-top: 30px;
+    width: 100%;
 }
 
 footer p {
@@ -88,3 +102,4 @@ footer p {
     padding: 0.5rem;
 }
 
+*/

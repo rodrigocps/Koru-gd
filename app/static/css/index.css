@@ -37,6 +37,9 @@ ul.lista-empresas {
 .empresa-name {
     font-weight: bold;
 }
+.lista {
+    margin-top: 20px;
+}
 
 /* CONTEUDO*/
 

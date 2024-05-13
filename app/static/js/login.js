@@ -22,9 +22,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }).catch(error => console.log(error))
     });
 
+    /*
+    
     document.getElementById("signupBtn").addEventListener('click', (event) => {
         event.preventDefault();
 
         window.location.href = "/signup"
     })
+
+    */
+
   });
