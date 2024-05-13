@@ -28,6 +28,9 @@ function renderEmpresas(data) {
         const listaDiv = document.querySelector("div.lista")
         listaDiv.innerHTML = ""
 
+        const title = document.createElement("h2")
+        title.textContent = "Empresas para você avaliar"
+        
         const row = document.createElement("div")
         row.classList.add("empresas-row", "row", "row-cols-1", "row-cols-lg-2", "row-cols-xl-2")
     
@@ -37,6 +40,7 @@ function renderEmpresas(data) {
                 row.appendChild(elem)
         });
 
+        listaDiv.appendChild(title)
         listaDiv.appendChild(row)
     }
 }
