@@ -129,3 +129,10 @@ ul.lista-empresas {
     cursor: pointer;
     padding: 10px 20px;
 }
+
+.pagination-nav {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
