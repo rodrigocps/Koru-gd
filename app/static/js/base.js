@@ -2,7 +2,7 @@
 function renderAuthenticated(user){
     console.log("authenticated")
     const authButton = document.getElementById("auth-button");
-    authButton.className = "login-button"
+    authButton.className = "logout-button"
     authButton.textContent = "Logout"
     authButton.addEventListener("click" , (event) => {
         event.preventDefault()

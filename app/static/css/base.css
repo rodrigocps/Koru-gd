@@ -1,4 +1,9 @@
 /*Main*/
+* {
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
 body, html{
     margin: 0;
     padding: 0;
@@ -14,7 +19,7 @@ body {
 
 .navbar {
     background: rgb(255,255,255);
-    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(184,184,184,1) 100%); 
+    background: linear-gradient(0deg, rgb(255, 255, 255) 0%, rrgb(245, 245, 245)100%); 
     padding: 0.5rem;
     border: 1px solid #ccc;
 }
@@ -25,7 +30,7 @@ body {
     font-size: 24px;
 }
 
-.login-button {
+.login-button, .logout-button {
     background-color: #009960;
     color: #fff;
     font-size: 14px;
@@ -34,6 +39,16 @@ body {
     text-decoration: none;
     transition: 0.3s background-color;
     cursor:pointer;
+}
+
+.logout-button {
+    background-color: #f53e4e;
+}
+
+#user-name {
+    padding: 1vw;
+    color: #05c991;
+    font-weight: 500;
 }
 
 .login-button:hover {
@@ -61,8 +76,7 @@ body {
 }
 
 .main-content {
-    background: #ececec;
-    padding: 60px;
+    padding: 90px 50px;
 }
 
 @media (min-width: 991px) {

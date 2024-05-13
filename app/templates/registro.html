@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block title %}
+Cadastro - Koru Jobs
+{% endblock %}
+
 {% block stylesheets %}
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/registro.css') }}">
@@ -39,7 +43,7 @@
                             <input type="submit" class="submit" id="signupBtn" value="Criar conta">
                         </div>
                         <div class="signin">
-                            <span>Ja possue uma conta? <a href="/login">Faca Login</a></span>
+                            <span>Ja possui uma conta? <a href="/login">Faça Login</a></span>
                         </div>
                     </div>
                 </div>

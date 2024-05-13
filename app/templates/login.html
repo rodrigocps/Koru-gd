@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% block title %}
+Login - Koru Jobs
+{% endblock %}
+
+
 {% block stylesheets %}
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
@@ -35,7 +40,7 @@
                             <input type="submit" class="submit" id="submitBtn" value="Entrar">
                         </div>
                         <div class="signin">
-                            <span>Nao possue uma conta? <a href="/signup" >Registre-se</a></span>
+                            <span>Nao possui uma conta? <a href="/signup" >Registre-se</a></span>
                         </div>
                     </div>
                 </div>
