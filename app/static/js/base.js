@@ -48,7 +48,7 @@ function validateLogin() {
         })
         .then(data => {
             if(data) {
-                localStorage.setItem("user", data)
+                localStorage.setItem("user", JSON.stringify(data))
                 renderAuthenticated(data);
             }
         })
@@ -58,7 +58,8 @@ function validateLogin() {
 }
 
 function logoutUser() {
-    window.location.href = window.location.href
+    localStorage.setItem("user", null)
+    window.location.href = window.location.pathname + window.location.search
 }
 
 

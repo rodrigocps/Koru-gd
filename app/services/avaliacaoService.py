@@ -98,12 +98,11 @@ def excluirAvaliacao(empresaId, avaliacaoId):
 
 
 def editarAvaliacao(empresaId, avaliacaoId, avaliacao):
-    avaliacao = getAvaliacao(empresaId, avaliacaoId) # Checar se existe a avaliação no Banco.
+    savedAvaliacao = getAvaliacao(empresaId, avaliacaoId) # Checar se existe a avaliação no Banco.
     user = auth.validateLogin()
     
-    if(user["email"] != avaliacao["autor_email"]):
+    if(user["email"] != savedAvaliacao["autor_email"]):
         return exceptions.throwUnauthorizedUpdateAvaliacaoException();
-
     
     try:
         with connect(DATABASE_PATH) as conn:

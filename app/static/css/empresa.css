@@ -2,7 +2,7 @@
     font-weight: 500;
 }
 
-#avaliacao-form {
+.avaliacoes-div {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -10,6 +10,10 @@
     border: solid 1px black;
     padding: 10px 25px;
     width: 50vw;
+}
+
+.login-avaliacoes-div {
+
 }
 
 input#titulo, .edit-titulo-input{
@@ -39,6 +43,4 @@ textarea#texto, .edit-text-input{
     padding-left: 10px;
 }
 
-.login-avaliacoes-div {
-    
-}
+
