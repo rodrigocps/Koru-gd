@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}
+Login - Koru Jobs
+{% endblock %}
+
+
+{% block stylesheets %}
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="wrapper">
+    <div class="container main">
+        <div class="row">
+            <div class="col-md-6 side-image">
+                <div class="text">
+                    <p>Acesse a sua conta!</p>
+                </div>
+            </div>
+                <div class="col-md-6 right">
+                    <div class="input-box">
+                        <h4>Entre em sua conta</h4>
+                        <div id="error"></div>
+                        <div class="input-field">
+                            <input type="text" class="input" id="email" name="email" required/>
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="input-field">
+                            <input type="password" class="input" id="senha" name="senha" required/>
+                            <label for="password">Senha</label>
+                        </div>
+                        <div class="input-field">
+                            <button type="submit" class="submit" id="submitBtn">Entrar</button>
+                        </div>
+                        <div class="signin">
+                            <span>Nao possui uma conta? <a href="/signup" >Registre-se</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!--
+<form id="loginForm">
+    <label for="email">Email: </label>
+    <input 
+        type="email"
+        name="email"
+        id="email"
+        placeholder="Digite seu email"
+    />
+    <label for="senha">Senha: </label>
+    <input 
+        type="password"
+        name="senha"
+        id="senha"
+        placeholder="Digite sua senha"
+    />
+    <button id="submitBtn" type="button">Entrar</button>
+    <button id="signupBtn" type="button">Cadastrar-se</button>
+</form>
+-->
+
+{% endblock %}

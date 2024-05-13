@@ -1,7 +1,42 @@
 {% extends "base.html" %}
 
-{% block title %}Inicio{% endblock %}
+{% block title %}Inicio - Koru Jobs{% endblock %}
+
+{% block stylesheets %}
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
+
+{% endblock %}
+
+{% block scripts %}
+
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+
+{% endblock %}
+
 
 {% block content %}
-<h1>Pagina Inicial</h1>
+<div class="container-fluid">
+    <div class="cover">
+        <div class="content">
+            <h1>Seus colegas de trabalho estao aqui</h1>
+            <h2>Sinta-se a vontade para avaliar</h2>
+            <div class="search-box">
+                <div id="search-bar">
+                    <input 
+                        type="text"
+                        id="search"
+                        name="search"
+                        placeholder="Pesquisar empresas"
+                    />
+                    <button type = "button" onclick="search()">Pesquisar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="lista container" id="empresas">
+    </div>
+</div>
+
+
 {% endblock %}

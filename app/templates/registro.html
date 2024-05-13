@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}
+Cadastro - Koru Jobs
+{% endblock %}
+
+{% block stylesheets %}
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/registro.css') }}">
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/registro.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="wrapper">
+    <div class="container main">
+        <div class="row">
+            <div class="col-md-6 side-image">
+                <div class="text">
+                    <p>Seja livre para alterar!</p>
+                </div>
+            </div>
+                <div class="col-md-6 right">
+                    <div class="input-box">
+                        <h4>Crie uma conta</h4>
+                        <div id="error"></div>
+                        <div class="input-field">
+                            <input type="text" class="input" id="nome" name="nome" required>
+                            <label for="nome">Nome</label>
+                        </div>
+                        <div id="nome-feedback"></div>
+                        
+                        <div class="input-field">
+                            <input type="email" class="input" id="email" name="email" required autocomplete="off">
+                            <label for="email">Email</label>
+                        </div>
+                        <div id="email-feedback"></div>
+
+                        <div class="input-field">
+                            <input type="password" class="input" id="senha" name="senha" required>
+                            <label for="password">Senha</label>
+                        </div>
+                        <div id="senha-feedback"></div>
+
+                        <div class="input-field">
+                            <input type="submit" class="submit" id="signupBtn" value="Criar conta">
+                        </div>
+                        <div class="signin">
+                            <span>Ja possui uma conta? <a href="/login">Faça Login</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
+<form id="usuario_form" name="usuario">
+    <label for="nome">Nome</label>
+    <input type="text" id="nome" name="nome"/>
+
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email"/>
+
+    <label for="senha">Senha</label>
+    <input type="password" id="senha" name="senha"/>
+
+    <button id="signupBtn" type="button">Cadastrar-se</button>
+    <p>Já tem uma conta?<a href="/login">Faça login!</a></p>
+</form>
+-->
+
+
+
+{% endblock %}

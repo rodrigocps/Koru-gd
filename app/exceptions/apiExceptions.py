@@ -5,6 +5,16 @@ def getJsonifiedResponseWithStatusCode(response, statusCode):
     response.status_code = statusCode
     return response
 
+################## AUTH EXCEPTIONS ##################
+def throwUnauthorizedException(response):
+    return abort(getJsonifiedResponseWithStatusCode(response, 401))
+
+def throwUserNotAuthenticatedException():
+    throwUnauthorizedException({
+        "mensagem" : "O usuário deve estar logado para executar essa operação."
+    })
+
+
 ################## CREATE EXCEPTIONS ##################
 def throwCreateException(response):
     return abort(getJsonifiedResponseWithStatusCode(response, 400))
@@ -17,6 +27,11 @@ def throwCreateAvaliacaoException():
 def throwCreateUsuarioException():
     return throwCreateException({
         "mensagem" : "Houve uma falha ao cadastrar usuário."
+    })
+#IAN
+def throwUsuarioExistente():
+    return throwCreateException({
+        "mensagem" : "Usuário já cadastrado."
     })
 
 ################## READ EXCEPTIONS ##################
@@ -39,9 +54,20 @@ def throwEmpresaNotFoundException():
     })
 
 ################## UPDATE EXCEPTIONS ##################
+def throwUpdateException(response):
+    return abort(getJsonifiedResponseWithStatusCode(response, 400))
+
+def throwUnauthorizedUpdateException(response):
+    return abort(getJsonifiedResponseWithStatusCode(response, 401))
+
 def throwUpdateAvaliacaoException():
     return throwCreateException({
         "mensagem" : "Houve uma falha ao atualizar a avaliação."
+    })
+
+def throwUnauthorizedUpdateAvaliacaoException():
+    return throwUnauthorizedUpdateException({
+        "mensagem" : "Somente o autor da avaliação pode alterá-la."
     })
 
 def throwUpdateUsuarioException():
@@ -50,13 +76,29 @@ def throwUpdateUsuarioException():
     })
 
 ################## DELETE EXCEPTIONS ##################
+def throwDeleteException(response):
+    return abort(getJsonifiedResponseWithStatusCode(response, 400))
+
+def throwUnauthorizedDeleteException(response):
+    return abort(getJsonifiedResponseWithStatusCode(response, 401))
 
 def throwDeleteAvaliacaoException():
-    return throwCreateException({
+    return throwDeleteException({
         "mensagem" : "Houve uma falha ao excluir a avaliação."
     })
 
+def throwDeleteAvaliacaoException():
+    return throwDeleteException({
+        "mensagem" : "Houve uma falha ao excluir a avaliação."
+    })
+
+def throwUnauthorizedDeleteAvaliacaoException():
+    return throwUnauthorizedDeleteException({
+        "mensagem" : "Somente o autor da avaliação pode deletá-la."
+    })
+
 def throwDeleteUsuarioException():
-    return throwCreateException({
+    return throwDeleteException({
         "mensagem" : "Houve uma falha ao excluir o usuário."
     })
+    
