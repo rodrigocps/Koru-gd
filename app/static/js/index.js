@@ -24,9 +24,10 @@ function fetchEmpresas (pagina, search) {
 }
 
 function renderEmpresas(data) {
+    const listaDiv = document.querySelector("div.lista")
+    listaDiv.innerHTML = ""
+
     if(data.length > 0) {
-        const listaDiv = document.querySelector("div.lista")
-        listaDiv.innerHTML = ""
 
         const title = document.createElement("h2")
         title.textContent = "Empresas para você avaliar"
@@ -42,6 +43,14 @@ function renderEmpresas(data) {
 
         listaDiv.appendChild(title)
         listaDiv.appendChild(row)
+    }
+    else {
+        const emptyMessage = document.createElement("span")
+        emptyMessage.className("empty-message")
+
+        emptyMessage.textContent = "Não há empresas para mostrar" 
+
+        listaDiv.appendChild(emptyMessage)
     }
 }
 
@@ -87,8 +96,11 @@ function getColElement(empresa) {
 function search() {
     const search = document.getElementById("search").value
 
-    if(search.length > 0) 
+    if(search.length > 0 && !(/^[\s\t]*$/.test(search)) ) 
         fetchEmpresas(1, search)
+    else {
+        window.location.href = window.location.href
+    }
 
 }
 
