@@ -18,7 +18,8 @@ def buildTables():
     CREATE TABLE IF NOT EXISTS empresas (
         id INTEGER PRIMARY KEY,
         nome TEXT NOT NULL,
-        setor TEXT
+        setor TEXT,
+        logo_url TEXT
     )
     """)
 
@@ -44,8 +45,8 @@ def addEmpresas():
     for empresa in empresas:
         try:
             cursor = conn.cursor()
-            query = "INSERT INTO empresas(nome, setor) VALUES(?,?)"
-            cursor.execute(query, (empresa["nome"], empresa["setor"]))
+            query = "INSERT INTO empresas(nome, setor, logo_url) VALUES(?,?,?)"
+            cursor.execute(query, (empresa["nome"], empresa["setor"], empresa["logoUrl"]))
             conn.commit()
         except:
             conn.rollback()

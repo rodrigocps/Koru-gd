@@ -13,6 +13,11 @@ if(id) {
         }).then(data => {
             const nome = document.getElementById("nome-empresa")
             const setor = document.getElementById("setor-empresa")
+            if(data.logo_url) {
+                const logo = document.getElementById("logo-empresa")
+                logo.src = data.logo_url
+            }
+
             const pageTitle = document.querySelector("head > title")
             pageTitle.textContent = data.nome + " - Koru Jobs"
 
