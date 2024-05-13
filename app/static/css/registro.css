@@ -9,6 +9,10 @@
     min-height: 100vh;
 }
 
+main {
+    padding: 0 !important;
+}
+
 .row {
     width: 900px;
     height: 550px;

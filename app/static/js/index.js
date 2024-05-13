@@ -43,6 +43,7 @@ function renderEmpresas(data) {
 
         listaDiv.appendChild(title)
         listaDiv.appendChild(row)
+        listaDiv.appendChild(pagination())
     }
     else {
         const emptyMessage = document.createElement("span")
@@ -52,6 +53,11 @@ function renderEmpresas(data) {
 
         listaDiv.appendChild(emptyMessage)
     }
+}
+
+function pagination(){
+    const paginationDiv = document.createElement("div");
+    paginationDiv.className = pagination
 }
 
 function getColElement(empresa) {
