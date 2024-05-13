@@ -71,7 +71,7 @@ textarea#texto, .edit-text-input{
     height: 60px;
     min-width: 60px;
     min-height: 60px;
-    background-color: rgb(138, 138, 138);
+    background-color: #198754;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -119,6 +119,7 @@ h3 {
     width: 100%;
     gap: 1vw;
     padding: 10px 0;
+    margin-top: 20px;
 }
 
 #logo-empresa {

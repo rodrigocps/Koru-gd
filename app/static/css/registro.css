@@ -150,4 +150,16 @@ span a:hover {
     }
 }
 
+.invalid-input, .valid-input {
+    padding-left: 1vw;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
 
+.invalid-input {
+    color: red;
+}
+
+.valid-input {
+    color: rgb(0, 82, 0);
+}

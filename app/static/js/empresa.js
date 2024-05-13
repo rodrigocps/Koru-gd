@@ -285,7 +285,7 @@ function renderButtonsDiv(parent, avaliacao) {
 
         editButton.classList.add("edit-button")
         editButton.classList.add("btn")
-        editButton.classList.add("btn-secondary")
+        editButton.classList.add("btn-primary")
 
         editButton.type = "button"
         editButton.textContent = "Editar"

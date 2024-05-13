@@ -55,7 +55,7 @@ def login(usuario):
             row = cursor.fetchone()
 
             if row is None or not check_password_hash(row[3], usuario["senha"]):
-                return make_response({"mensagem": "Usuário / senha incorreta."}, 401) # UNAUTHORIZED/UNAUTHENTICATED
+                return make_response({"mensagem": "Email ou senha incorretos."}, 401) # UNAUTHORIZED/UNAUTHENTICATED
 
             session["user"] = {"id":row[0], "nome":row[1], "email":row[2]}
             print(session)

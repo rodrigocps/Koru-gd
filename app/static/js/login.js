@@ -14,22 +14,18 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify(formData)
         }).then(response => {
-            if(!response.ok) {
-                throw new Error("Erro ao efetuar o login do usuário.")
+            const errorElement = document.getElementById("error")
+
+            if(response.status === 401 || response.status === 422) {
+                errorElement.textContent = "Email ou senha inválidos."
+            } else if(!response.ok) {
+                errorElement.textContent = "Ocorreu um erro interno ao processar sua solicitação."
             }
-            
-            window.location.href = "/"
-        }).catch(error => console.log(error))
+            else window.location.href = "/"
+
+        }).catch(error => {
+            const errorElement = document.getElementById("error")
+            errorElement.textContent = "Ocorreu um erro interno ao processar sua solicitação."
+        })
     });
-
-    /*
-    
-    document.getElementById("signupBtn").addEventListener('click', (event) => {
-        event.preventDefault();
-
-        window.location.href = "/signup"
-    })
-
-    */
-
   });

@@ -103,6 +103,14 @@ body {
     padding: 0 !important;
 }
 
+#error {
+    color:red;
+    padding-left: .7vw;
+    margin-bottom: 10px;
+}
+
+
+
 /* FOOTER 
 
 footer {

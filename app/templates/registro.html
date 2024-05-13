@@ -27,18 +27,25 @@ Cadastro - Koru Jobs
                 <div class="col-md-6 right">
                     <div class="input-box">
                         <h4>Crie uma conta</h4>
+                        <div id="error"></div>
                         <div class="input-field">
                             <input type="text" class="input" id="nome" name="nome" required>
                             <label for="nome">Nome</label>
                         </div>
+                        <div id="nome-feedback"></div>
+                        
                         <div class="input-field">
-                            <input type="text" class="input" id="email" name="email" required autocomplete="off">
+                            <input type="email" class="input" id="email" name="email" required autocomplete="off">
                             <label for="email">Email</label>
                         </div>
+                        <div id="email-feedback"></div>
+
                         <div class="input-field">
                             <input type="password" class="input" id="senha" name="senha" required>
                             <label for="password">Senha</label>
                         </div>
+                        <div id="senha-feedback"></div>
+
                         <div class="input-field">
                             <input type="submit" class="submit" id="signupBtn" value="Criar conta">
                         </div>

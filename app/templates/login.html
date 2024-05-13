@@ -28,16 +28,17 @@ Login - Koru Jobs
                 <div class="col-md-6 right">
                     <div class="input-box">
                         <h4>Entre em sua conta</h4>
+                        <div id="error"></div>
                         <div class="input-field">
-                            <input type="text" class="input" id="email" name="email" required autocomplete="off">
+                            <input type="text" class="input" id="email" name="email" required/>
                             <label for="email">Email</label>
                         </div>
                         <div class="input-field">
-                            <input type="password" class="input" id="senha" name="senha" required>
+                            <input type="password" class="input" id="senha" name="senha" required/>
                             <label for="password">Senha</label>
                         </div>
                         <div class="input-field">
-                            <input type="submit" class="submit" id="submitBtn" value="Entrar">
+                            <button type="submit" class="submit" id="submitBtn">Entrar</button>
                         </div>
                         <div class="signin">
                             <span>Nao possui uma conta? <a href="/signup" >Registre-se</a></span>
