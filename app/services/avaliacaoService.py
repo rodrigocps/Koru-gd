@@ -144,3 +144,28 @@ def getUserAvaliacoes(empresaId, userId):
     conn.close()
 
     return avaliacoes
+
+def getUserAvaliacao(empresaId, avaliacaoId, userId):
+    conn = connect(DATABASE_PATH)
+    conn.row_factory = Row
+
+    cursor = conn.cursor()
+
+    query = '''
+        SELECT av.id, av.empresa_id, av.titulo, av.texto, u.nome as autor_name, u.email as autor_email
+        FROM avaliacoes av 
+        LEFT JOIN usuarios u 
+        ON u.id = av.autor_id 
+        WHERE av.id = ? 
+        AND av.autor_id = ?
+        AND av.empresa_id = ? 
+    '''
+    
+    cursor.execute(query, (avaliacaoId,userId, empresaId))
+    
+    row = cursor.fetchone()
+    
+    conn.close()
+
+    return utils.row_to_dict(row)
+
