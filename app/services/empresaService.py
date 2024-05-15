@@ -7,6 +7,18 @@ import app.exceptions.apiExceptions as exceptions
 # Sim
 
 def listarEmpresas(pagina, search):
+    totalPaginas = 1
+    if not search:
+        totalPaginas = getTotalPaginas(None)
+    else:
+        totalPaginas = getTotalPaginas(search)
+
+    if(pagina > totalPaginas):
+        return {
+            "pagina" : pagina,
+            "totalPaginas" : totalPaginas,
+            "empresas" : []
+        }
     conn = connect(DATABASE_PATH)
     conn.row_factory = Row
 
@@ -28,7 +40,11 @@ def listarEmpresas(pagina, search):
     empresas = cursor.fetchall()
     conn.close()
 
-    return utils.row_list_to_dict_list(empresas)
+    return {
+        "pagina" : pagina,
+        "totalPaginas" : totalPaginas,
+        "empresas" : utils.row_list_to_dict_list(empresas)
+    }
 
 
 def getEmpresa(empresaId):
@@ -46,3 +62,31 @@ def getEmpresa(empresaId):
         return utils.row_to_dict(empresa)
     else:
         return exceptions.throwEmpresaNotFoundException()
+    
+def getTotalPaginas(search):
+    conn = connect(DATABASE_PATH)
+    conn.row_factory = Row
+
+
+    cursor = conn.cursor()
+
+    query = "SELECT COUNT(*) AS quantidade FROM empresas"
+
+    if(search):
+        query = query + " WHERE LOWER(nome) LIKE '%' || LOWER(?) || '%' OR LOWER(setor) LIKE '%' || LOWER(?) || '%'"
+        cursor.execute(query, (search, search,))
+    else:
+        cursor.execute(query)
+    
+    total = cursor.fetchone()[0]
+
+    conn.close()
+    if(total == 0):
+        return 0
+
+    if(total < 20 and total>0):
+        return 1
+    
+    totalPaginas = total // 20
+    
+    return totalPaginas
