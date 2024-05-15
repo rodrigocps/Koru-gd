@@ -1,4 +1,6 @@
 def row_to_dict(row):
+    if not row:
+        return None
     return {key: row[key] for key in row.keys()}
 
 def row_list_to_dict_list(row_list):
