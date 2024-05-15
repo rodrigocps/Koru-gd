@@ -132,7 +132,8 @@ def getUserAvaliacoes(empresaId, userId):
         FROM avaliacoes av 
         LEFT JOIN usuarios u 
         ON u.id = av.autor_id 
-        WHERE av.empresa_id = ? AND autor_id = ?
+        WHERE av.empresa_id = ? 
+        AND av.autor_id = ?
     '''
     
     cursor.execute(query, (empresaId,userId))
