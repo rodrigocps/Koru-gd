@@ -1,86 +1,77 @@
-from sqlite3 import connect, Row
-from app.database import DATABASE_PATH
-import app.services.utils as utils
+from app import db
+from flask import make_response, jsonify
+import sqlalchemy as sa
 import app.exceptions.apiExceptions as exceptions
+from app.serializer import EmpresaSchema, validate
+from app.models import Empresa
 
-# 1- É aqui que vai uma função ou método para só acessar esses registros caso esteja logado ?
-# Sim
+
+def saveEmpresa(data):
+    try:
+        e = validate(data, EmpresaSchema())
+    
+        empresa = Empresa(
+            nome = e["nome"],
+            setor = e["setor"],
+            logo_url = e["logo_url"]
+        )
+
+        db.session.add(empresa)
+        db.session.commit()
+
+        return make_response(empresa.to_dict(), 200)
+    
+    except:
+        print("erro")
+        db.session.rollback()
+        return make_response({"mensagem" : "Ocorreu um erro ao adicionar empresa."}, 400)
+    
+    
 
 def listarEmpresas(pagina, search):
-    totalPaginas = 1
-    if not search:
-        totalPaginas = getTotalPaginas(None)
+    if(search):
+        query = sa.select(Empresa).where(sa.or_(
+            sa.func.lower(Empresa.nome).like(sa.func.lower('%{}%'.format(search))),
+            sa.func.lower(Empresa.setor).like(sa.func.lower('%{}%'.format(search)))
+        ))
     else:
-        totalPaginas = getTotalPaginas(search)
+        query = sa.select(Empresa).offset(pagina).limit(20)
+        
+    empresas = db.session.scalars(query).all()
 
-    if(pagina > totalPaginas):
-        return {
-            "pagina" : pagina,
-            "totalPaginas" : totalPaginas,
-            "empresas" : []
-        }
-    conn = connect(DATABASE_PATH)
-    conn.row_factory = Row
-
-    cursor = conn.cursor()
-
-    sql = "SELECT * FROM empresas {} ORDER BY id LIMIT 20 OFFSET ?"
-
-    if search :
-        sql = sql.format("""
-            WHERE LOWER(nome) LIKE '%' || LOWER(?) || '%' 
-            OR LOWER(setor) LIKE '%' || LOWER(?) || '%'
-        """)
-        cursor.execute(sql, (search, search, ((pagina-1) * 10),))
-
+    if(len(empresas) > 0):
+        return jsonify(
+            {
+                "pagina" : pagina,
+                "totalPaginas" : getTotalPaginas(search),
+                "empresas" : [empresa.to_dict() for empresa in empresas]
+            }
+        )
     else:
-        sql = sql.format("")
-        cursor.execute(sql, (((pagina-1) * 10),))
-    
-    empresas = cursor.fetchall()
-    conn.close()
+        return {"empresas": []}
 
-    return {
-        "pagina" : pagina,
-        "totalPaginas" : totalPaginas,
-        "empresas" : utils.row_list_to_dict_list(empresas)
-    }
 
 
 def getEmpresa(empresaId):
-    conn = connect(DATABASE_PATH)
-    conn.row_factory = Row
-
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM empresas WHERE id = ?", (empresaId,))
-    
-    empresa = cursor.fetchone()
-
-    conn.close()
+    empresa = db.session.get(Empresa, empresaId)
 
     if(empresa):
-        return utils.row_to_dict(empresa)
+        return empresa.to_dict()
     else:
         return exceptions.throwEmpresaNotFoundException()
-    
+
 def getTotalPaginas(search):
-    conn = connect(DATABASE_PATH)
-    conn.row_factory = Row
-
-
-    cursor = conn.cursor()
-
-    query = "SELECT COUNT(*) AS quantidade FROM empresas"
-
+    total = 1
     if(search):
-        query = query + " WHERE LOWER(nome) LIKE '%' || LOWER(?) || '%' OR LOWER(setor) LIKE '%' || LOWER(?) || '%'"
-        cursor.execute(query, (search, search,))
+        query = sa.select(sa.func.count(Empresa.id)).where(sa.or_(
+            sa.func.lower(Empresa.nome).like(sa.func.lower('%{}%'.format(search))),
+            sa.func.lower(Empresa.setor).like(sa.func.lower('%{}%'.format(search)))
+        ))
     else:
-        cursor.execute(query)
-    
-    total = cursor.fetchone()[0]
+        query = sa.select(sa.func.count(Empresa.id))
 
-    conn.close()
+    total = db.session.execute(query).scalar()
+
     if(total == 0):
         return 0
 

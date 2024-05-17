@@ -18,6 +18,7 @@ def throwUserNotAuthenticatedException():
 ################## CREATE EXCEPTIONS ##################
 def throwCreateException(response):
     return abort(getJsonifiedResponseWithStatusCode(response, 400))
+    
 
 def throwCreateAvaliacaoException():
     return throwCreateException({

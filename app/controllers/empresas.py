@@ -3,8 +3,12 @@ from app.services import empresaService as service
 
 EMPRESAS_ENDPOINT = "/api/empresas/"
 
-class Empresa:
+class EmpresaController:
     def register_routes(app):
+        @app.route(EMPRESAS_ENDPOINT, methods=["POST"])
+        def save_empresa():
+            return service.saveEmpresa(request.json)
+        
         @app.route(EMPRESAS_ENDPOINT, methods=["GET"])
         def list_empresas():
             pagina = request.args.get("pagina", default=1, type=int)
@@ -15,7 +19,6 @@ class Empresa:
         @app.route(EMPRESAS_ENDPOINT + "<int:empresaId>", methods=["GET"])
         def find_empresa(empresaId):
             return service.getEmpresa(empresaId)
-        
          
         ################## FRONTEND ################## 
 

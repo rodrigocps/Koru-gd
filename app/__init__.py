@@ -1,10 +1,19 @@
 from flask import Flask
-from app.create_database import buildDb
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from .config import Config
+# import app.database as config_db
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = '123456789'
+app.config.from_object(Config)
 
-from app import routes
+db = SQLAlchemy(app)
 
-buildDb()
+Migrate(app, db)
+
+from app import copy_empresas, models, routes
+
+# from app import routes
+
+# buildDb()

@@ -51,7 +51,7 @@ function renderAvaliacoes() {
         }).then(data => {
             if(data.length > 0) {
                 data.sort(compararPorId).forEach(avaliacao => {
-                    if(avaliacao.titulo && avaliacao.texto && avaliacao.texto) {
+                    if(avaliacao.titulo && avaliacao.texto && avaliacao.texto && avaliacao.author) {
                         const li = document.createElement("li");
                         li.className = "avaliacao-li"
                         renderAvaliacao(li, avaliacao)
@@ -66,8 +66,8 @@ function renderAvaliacao(li, avaliacao){
     const avatar = document.createElement("span")
     avatar.classList.add("avatar-icon")
 
-    if(avaliacao.autor_name) {
-        avatar.textContent = pegarIniciais(avaliacao.autor_name) 
+    if(avaliacao.author) {
+        avatar.textContent = pegarIniciais(avaliacao.author.nome) 
     }
     
     const avaliacaoDiv = document.createElement("div")
@@ -83,7 +83,7 @@ function renderAvaliacao(li, avaliacao){
 
     const authorName = document.createElement("span")
     authorName.className = "avaliacao-author-name"
-    authorName.textContent = "Autor: " + avaliacao.autor_name
+    authorName.textContent = "Autor: " + avaliacao.author.nome
 
     li.appendChild(avatar)
 
