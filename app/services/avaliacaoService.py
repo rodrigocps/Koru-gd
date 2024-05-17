@@ -70,7 +70,7 @@ def excluirAvaliacao(empresaId, avaliacaoId):
         return exceptions.throwUsuárioNotFoundException()
 
     try:
-        avaliacao = db.session.scalars(usuario.avaliacoes.select().where(sa.and_(Avaliacao.id.is_(avaliacaoId), Avaliacao.empresa_id.is_(empresaId)))).one()
+        avaliacao = db.session.scalars(usuario.avaliacoes.select().where(sa.and_(Avaliacao.id == avaliacaoId, Avaliacao.empresa_id == empresaId))).one()
 
         db.session.delete(avaliacao)
         db.session.commit()
@@ -100,9 +100,9 @@ def editarAvaliacao(empresaId, avaliacaoId, data):
     novaAvaliacao = validate(data, AvaliacaoSchema())
 
     try:
-        avaliacao = db.session.scalars(usuario.avaliacoes.select().where(sa.and_(Avaliacao.id.is_(avaliacaoId), Avaliacao.empresa_id.is_(empresaId)))).one()
+        avaliacao = db.session.scalars(usuario.avaliacoes.select().where(sa.and_(Avaliacao.id == avaliacaoId, Avaliacao.empresa_id == empresaId))).one()
         
-        query = sa.update(Avaliacao).where(Avaliacao.id).values(**novaAvaliacao)
+        query = sa.update(Avaliacao).where(Avaliacao.id == avaliacaoId).values(**novaAvaliacao)
         db.session.execute(query)
         db.session.commit()
 

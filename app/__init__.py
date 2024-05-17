@@ -10,7 +10,8 @@ app.config.from_object(Config)
 
 db = SQLAlchemy(app)
 
-Migrate(app, db)
+migrate = Migrate(app, db)
+
 
 from app import copy_empresas, models, routes
 

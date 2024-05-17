@@ -19,3 +19,4 @@ try:
             saveEmpresa({"nome" : empresa["nome"], "setor" : empresa["setor"], "logo_url": empresa["logoUrl"]})
 except DatabaseError as e:
     print("Erro ao copiar empresas para o banco de dados.")
+    print(e)
