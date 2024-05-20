@@ -12,8 +12,8 @@ email = os.environ.get("ADMIN_EMAIL")
 senha = os.environ.get("ADMIN_SENHA")
 
 # ################ TESTS ONLY ################
-email = "koru@mail.com"
-senha = "koru123"
+# email = "koru@mail.com"
+# senha = "koru123"
 # ############################################
 
 def addAdmin(email, senha):
@@ -34,7 +34,7 @@ if(email and senha):
         query = sa.select(Usuario).where(Usuario.email == email)
         usuario = db.session.scalars(query).one()
 
-        # db.session.execute(sa.delete(Usuario).where(Usuario.id == usuario.id))
-        # db.session.commit()
+        db.session.execute(sa.delete(Usuario).where(Usuario.email == "koru@mail.com"))
+        db.session.commit()
     except NoResultFound as nrf:
         addAdmin(email, senha)
