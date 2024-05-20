@@ -8,11 +8,20 @@ Perfil
 {% block stylesheets %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/avaliacoes.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/perfil.css') }}">
+
+{% if admin %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/adm-profile.css') }}">
+{% endif %}
+
 {% endblock %}
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/avaliacoes.js') }}"></script>
 <script src="{{ url_for('static', filename='js/perfil.js') }}"></script>
+
+{% if admin %}
+    <script src="{{ url_for('static', filename='js/adm-profile.js') }}"></script>
+{% endif %}
 
 {% endblock %}
 
@@ -44,9 +53,11 @@ Perfil
             <div id="btns-div"></div>
         </div>
 
-        <h2>Avaliações</h2>
-        <hr/>
-        <ul id="avaliacoes-list"></ul>
+        <div class="profile-content">
+            <h2>Avaliações</h2>
+            <hr/>
+            <ul id="avaliacoes-list"></ul>
+        </div>
     </div>
 
 {% endblock %}

@@ -57,6 +57,8 @@ class UsuarioController:
         def perfil():
             u = auth.validateSession();
             if(u):
+                if(u["tipo"] == "ADMIN"):
+                    return render_template("perfil.html", admin=True)
                 return render_template("perfil.html")
             else:
                 return redirect("/")

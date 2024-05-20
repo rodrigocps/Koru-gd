@@ -12,8 +12,8 @@ email = os.environ.get("ADMIN_EMAIL")
 senha = os.environ.get("ADMIN_SENHA")
 
 # ################ TESTS ONLY ################
-# email = "koru@mail.com"
-# senha = "koru123"
+email = "koru@mail.com"
+senha = "koru123"
 # ############################################
 
 def addAdmin(email, senha):
