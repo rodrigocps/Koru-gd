@@ -1,146 +1,122 @@
-from sqlite3 import connect, Row, Error
-from flask import session
-from app.database import DATABASE_PATH
-import app.services.utils as utils
+from app import db
+from app.models import Avaliacao, Empresa, Usuario
+from app.serializer import AvaliacaoSchema, validate
+import sqlalchemy as sa
+from sqlalchemy.exc import IntegrityError, NoResultFound, DatabaseError
 import app.exceptions.apiExceptions as exceptions
-import app.services.authService as auth
+from app.services import authService as auth
+from flask import session
 
 def adicionarAvaliacao(data, empresaId):
-    user = auth.validateLogin()
+    user = auth.validateSession()
+    if not user:
+        return exceptions.throwUserNotAuthenticatedException()
+    
     try:
-        with connect(DATABASE_PATH) as conn:
-            cursor = conn.cursor()
+        a = validate(data, AvaliacaoSchema())
 
-            query = "INSERT INTO avaliacoes(titulo, texto, empresa_id, autor_id) VALUES (?, ?, ?, ?)"
+        avaliacao = Avaliacao(
+            titulo = a["titulo"],
+            texto = a["texto"],
+            author_id = user["id"],
+            empresa_id = empresaId
+        )
 
-            cursor.execute(query, (data["titulo"], data["texto"], empresaId, user["id"],))
-            
-            conn.commit()
+        db.session.add(avaliacao)
+        db.session.commit()
 
-            avaliacao = data.copy()
-            avaliacao["id"] = cursor.lastrowid
-
-            return avaliacao
-    except Error as e:
-        conn.rollback()
-        print(e)
+        return avaliacao.to_dict()
+    except IntegrityError:
         return exceptions.throwCreateAvaliacaoException()
-    finally:
-        conn.close()
 
 
 def getAvaliacoes(empresaId):
-    conn = connect(DATABASE_PATH)
-    conn.row_factory = Row
+    empresa = db.session.get(Empresa, empresaId)
+    if(empresa):
+        avaliacoes = db.session.scalars(empresa.avaliacoes.select()).all()
 
-    cursor = conn.cursor()
-
-    query = "SELECT av.id, av.empresa_id, av.titulo, av.texto, u.nome as autor_name, u.email as autor_email FROM avaliacoes av LEFT JOIN usuarios u ON u.id = av.autor_id WHERE av.empresa_id = ?"
-    
-    cursor.execute(query, (empresaId,))
-    rows = cursor.fetchall()
-
-    avaliacoes = utils.row_list_to_dict_list(rows)
-
-    conn.close()
-
-    if "user" in session:
-        user = session["user"]
-        userAvaliacoes = getUserAvaliacoes(empresaId, user["id"])
-
-        avReturn = []
-
-        for av in avaliacoes:
-            for uav in userAvaliacoes:
-                if(uav["id"]== av["id"]):
-                    av["isClientOwner"] = True
-            
-            avReturn.append(av)
-
-        return avReturn
-
+        return [avWthOwner(avaliacao.to_dict()) for avaliacao in avaliacoes]
     else:
-        return avaliacoes
-
+        return exceptions.throwEmpresaNotFoundException()
+        
 def getAvaliacao(empresaId, avaliacaoId):
-    conn = connect("banco.db")
-    conn.row_factory = Row
-
-    cursor = conn.cursor()
-    query = "SELECT av.id, av.empresa_id, av.titulo, av.texto, u.nome as autor_name, u.email as autor_email FROM avaliacoes av LEFT JOIN usuarios u ON u.id = av.autor_id WHERE av.empresa_id = ? AND av.id = ?"
-
-    cursor.execute(query, (empresaId, avaliacaoId))
-    
-    avaliacao = cursor.fetchone()
-    conn.close()
-
-    if(avaliacao):
-        return utils.row_to_dict(avaliacao)
+    empresa = db.session.get(Empresa, empresaId)
+    if(empresa):
+        try:
+            avaliacao = db.session.scalars(sa.select(Avaliacao).where(Avaliacao.id.is_(avaliacaoId))).one()
+            return avWthOwner(avaliacao.to_dict())
+        except NoResultFound:
+            return exceptions.throwAvaliacaoNotFoundException()
     else:
-        return exceptions.throwAvaliacaoNotFoundException()
-
-def excluirAvaliacao(empresaId, avaliacaoId):
-    avaliacao = getAvaliacao(empresaId, avaliacaoId)
-    user = auth.validateLogin()
-
-    if(user["email"] != avaliacao["autor_email"]):
-        return exceptions.throwUnauthorizedDeleteAvaliacaoException();
+        return exceptions.throwEmpresaNotFoundException()
     
-    conn = connect("banco.db")
+def avWthOwner(avaliacao):
+    user = auth.validateSession()
+    if("tipo" in user and user["tipo"]== 'ADMIN'):
+        avaliacao["isClientAdmin"] = True
 
-    cursor = conn.cursor()
-    cursor.execute("DELETE FROM avaliacoes WHERE empresa_id = ? and id = ?", (empresaId, avaliacaoId))
-
-    conn.commit()
-    conn.close()
+    if user and user["email"] == avaliacao["author"]["email"]:
+        avaliacao["isClientOwner"] = True
 
     return avaliacao
 
+def excluirAvaliacao(empresaId, avaliacaoId):
+    u = auth.validateSession()
+    if not u:
+        return exceptions.throwUserNotAuthenticatedException()
+    
+    usuario = db.session.get(Usuario, u["id"])
 
-def editarAvaliacao(empresaId, avaliacaoId, avaliacao):
-    savedAvaliacao = getAvaliacao(empresaId, avaliacaoId) # Checar se existe a avaliação no Banco.
-    user = auth.validateLogin()
-    
-    if(user["email"] != savedAvaliacao["autor_email"]):
-        return exceptions.throwUnauthorizedUpdateAvaliacaoException();
-    
+    if not usuario:
+        session.clear()
+        return exceptions.throwUsuárioNotFoundException()
+
     try:
-        with connect(DATABASE_PATH) as conn:
-            conn = connect("banco.db")
+        query = sa.select(Avaliacao).where(sa.and_(Avaliacao.id == avaliacaoId, Avaliacao.empresa_id == empresaId)).options(sa.orm.joinedload(Avaliacao.author))
+        avaliacao = db.session.scalars(query).one()
 
-            cursor = conn.cursor()
-            cursor.execute("UPDATE avaliacoes SET titulo = ?, texto = ? WHERE empresa_id = ? AND id = ?", (avaliacao["titulo"], avaliacao["texto"], empresaId, avaliacaoId))
+        if(avaliacao.author_id != usuario.id and usuario.tipo != 'ADMIN'):
+            return exceptions.throwUnauthorizedDeleteAvaliacaoException()
 
-            conn.commit()
-            
-            return getAvaliacao(empresaId, avaliacaoId)
-    except:
-        conn.rollback()
+        db.session.delete(avaliacao)
+        db.session.commit()
+
+        return avaliacao.to_dict()
+    except NoResultFound:
+        db.session.rollback()
+        return exceptions.throwAvaliacaoNotFoundException()
+    except DatabaseError as e:
+        print(e)
+        db.session.rollback()
         return exceptions.throwUpdateAvaliacaoException()
 
-    finally:
-        conn.close() 
 
-def getUserAvaliacoes(empresaId, userId):
-    conn = connect(DATABASE_PATH)
-    conn.row_factory = Row
 
-    cursor = conn.cursor()
-
-    query = '''
-        SELECT av.id, av.empresa_id, av.titulo, av.texto, u.nome as autor_name, u.email as autor_email
-        FROM avaliacoes av 
-        LEFT JOIN usuarios u 
-        ON u.id = av.autor_id 
-        WHERE av.empresa_id = ? 
-        AND av.autor_id = ?
-    '''
+def editarAvaliacao(empresaId, avaliacaoId, data):
+    u = auth.validateSession()
     
-    cursor.execute(query, (empresaId,userId))
-    rows = cursor.fetchall()
+    if not u:
+        return exceptions.throwUserNotAuthenticatedException()
+    
+    usuario = db.session.get(Usuario, u["id"])
+    if not usuario:
+        session.clear()
+        return exceptions.throwUsuárioNotFoundException()
+    
+    novaAvaliacao = validate(data, AvaliacaoSchema())
 
-    avaliacoes = utils.row_list_to_dict_list(rows)
+    try:
+        avaliacao = db.session.scalars(usuario.avaliacoes.select().where(sa.and_(Avaliacao.id == avaliacaoId, Avaliacao.empresa_id == empresaId))).one()
+        
+        query = sa.update(Avaliacao).where(Avaliacao.id == avaliacaoId).values(**novaAvaliacao)
+        db.session.execute(query)
+        db.session.commit()
 
-    conn.close()
-
-    return avaliacoes
+        return avaliacao.to_dict()
+    except NoResultFound:
+        db.session.rollback()
+        return exceptions.throwAvaliacaoNotFoundException()
+    except DatabaseError as e:
+        print(e)
+        db.session.rollback()
+        return exceptions.throwUpdateAvaliacaoException()

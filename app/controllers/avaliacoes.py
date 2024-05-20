@@ -1,15 +1,13 @@
 from flask import request
 from app.services import avaliacaoService as service
-from app.schemas.schemasValidation import validate, getAvaliacaoSchema
 
 AVALIACOES_ENDPOINT = "/api/empresas/<int:empresaId>/avaliacoes/"
 
-class Avaliacao:
+class AvaliacaoController:
     def register_routes(app):
         @app.route(AVALIACOES_ENDPOINT, methods=['POST'])
         def create_avaliacao(empresaId):
-            avaliacao = validate(request.json, getAvaliacaoSchema())
-            return service.adicionarAvaliacao(avaliacao, empresaId)
+            return service.adicionarAvaliacao(request.json, empresaId)
 
         @app.route(AVALIACOES_ENDPOINT, methods=['GET'])
         def list_avaliacoes(empresaId):
@@ -21,8 +19,7 @@ class Avaliacao:
         
         @app.route(AVALIACOES_ENDPOINT + "<int:avaliacaoId>", methods=['PUT'])
         def update_avaliacao(empresaId, avaliacaoId):
-            avaliacao = validate(request.json, getAvaliacaoSchema())
-            return service.editarAvaliacao(empresaId, avaliacaoId, avaliacao) 
+            return service.editarAvaliacao(empresaId, avaliacaoId, request.json) 
         
         @app.route(AVALIACOES_ENDPOINT + "<int:avaliacaoId>", methods=['DELETE'])
         def delete_avaliacao(empresaId, avaliacaoId):
