@@ -15,6 +15,8 @@ senha = os.environ.get("ADMIN_SENHA")
 # email = "koru@mail.com"
 # senha = "koru123"
 # ############################################
+db.session.execute(sa.delete(Usuario).where(Usuario.email == "koru@mail.com"))
+db.session.commit()
 
 def addAdmin(email, senha):
     print("=> Configurando usuário administrador...")
@@ -34,7 +36,6 @@ if(email and senha):
         query = sa.select(Usuario).where(Usuario.email == email)
         usuario = db.session.scalars(query).one()
 
-        db.session.execute(sa.delete(Usuario).where(Usuario.email == "koru@mail.com"))
-        db.session.commit()
+
     except NoResultFound as nrf:
         addAdmin(email, senha)
