@@ -12,6 +12,7 @@ class Usuario(db.Model):
     nome: so.Mapped[str] = so.mapped_column(sa.String(120))
     email: so.Mapped[str] = so.mapped_column(sa.String(120), index=True, unique=True)
     senha: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
+    tipo: so.Mapped[str] = so.mapped_column(sa.String(5), index=True, default="USER", unique=False)
 
     avaliacoes: so.WriteOnlyMapped['Avaliacao'] = so.relationship(back_populates='author')
 
@@ -25,7 +26,7 @@ class Usuario(db.Model):
         return check_password_hash(self.senha, senha)
     
     def to_dict(self):
-        return {"id":self.id, "nome":self.nome, "email":self.email}
+        return {"id":self.id, "nome":self.nome, "email":self.email, "tipo": self.tipo}
     
     
 class Empresa(db.Model):

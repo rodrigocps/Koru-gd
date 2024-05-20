@@ -12,8 +12,7 @@ db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
 
-
-from app import copy_empresas, models, routes
+from app import copy_empresas, models, routes, config_admin
 
 # from app import routes
 

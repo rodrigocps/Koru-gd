@@ -24,6 +24,7 @@ def adicionarUsuario(data):
         return make_response(session["user"], 201)
     except IntegrityError as e:
         db.session.rollback()
+        print(e)
         return make_response({"mensagem":"Já existe um usuário cadastrado com esse email."}, 401)
     except:
         return make_response({"mensagem":"Erro ao cadastrar usuario"}, 400)
@@ -35,11 +36,13 @@ def login(data):
     try:
         u = UsuarioLoginSchema().load(data)
 
-        query = sa.select(Usuario).where(Usuario.email.like(u["email"]))
+        query = sa.select(Usuario).where(Usuario.email == u["email"])
 
         usuario = db.session.scalars(query).one()
 
         session["user"] = usuario.to_dict()
+        if not usuario.tipo:
+            session["user"]["tipo"] = "USER"
 
         return make_response(session["user"], 200)
     

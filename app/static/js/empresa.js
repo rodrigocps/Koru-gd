@@ -92,8 +92,8 @@ function renderAvaliacao(li, avaliacao){
     avaliacaoDiv.appendChild(authorName)
     li.appendChild(avaliacaoDiv)
 
-    if(avaliacao.isClientOwner) 
-        renderButtonsDiv(avaliacaoDiv, avaliacao)
+    if(avaliacao.isClientOwner || avaliacao.isClientAdmin) 
+        renderButtonsDiv(avaliacaoDiv, avaliacao, avaliacao.isClientAdmin)
 
 }
 
@@ -102,7 +102,6 @@ function renderAddAvaliacao() {
     if (avaliacaoDiv) {
         const user = JSON.parse(localStorage.getItem("user"));
         if (user) {
-            console.log(user);
             const form = `
                 <div class="avaliacoes-div">
                     <h3>Adicione uma avaliação</h3>
@@ -173,7 +172,6 @@ function addAvaliacao() {
 function getEdicaoBlock(parent,savedAvaliacao) {
     const edicaoBlock = document.createElement("div")
     edicaoBlock.className = "editar-avaliacao-block"
-
 
     const tituloLabel = document.createElement("span")
     tituloLabel.className = "edit-block-titulo-label"
@@ -275,21 +273,25 @@ function compararPorId(a, b) {
     return b.id - a.id;
 }
 
-function renderButtonsDiv(parent, avaliacao) {
+function renderButtonsDiv(parent, avaliacao, isClientAdmin) {
     user = localStorage.getItem("user")
     if(user) {
         const buttonsdiv = document.createElement("div")
         buttonsdiv.className = "avaliacao-buttons-div"
 
-        const editButton = document.createElement("button")
+        if(!isClientAdmin){
+            const editButton = document.createElement("button")
 
-        editButton.classList.add("edit-button")
-        editButton.classList.add("btn")
-        editButton.classList.add("btn-primary")
+            editButton.classList.add("edit-button")
+            editButton.classList.add("btn")
+            editButton.classList.add("btn-primary")
 
-        editButton.type = "button"
-        editButton.textContent = "Editar"
-        editButton.addEventListener("click", () => editarAvaliacao(parent, avaliacao))
+            editButton.type = "button"
+            editButton.textContent = "Editar"
+            editButton.addEventListener("click", () => editarAvaliacao(parent, avaliacao))
+
+            buttonsdiv.appendChild(editButton)
+        }
 
         const deleteButton = document.createElement("button")
 
@@ -301,7 +303,6 @@ function renderButtonsDiv(parent, avaliacao) {
         deleteButton.textContent = "Excluir"
         deleteButton.addEventListener("click", () => deletarAvaliacao(avaliacao.empresa_id, avaliacao.id))
     
-        buttonsdiv.appendChild(editButton)
         buttonsdiv.appendChild(deleteButton)
     
         parent.appendChild(buttonsdiv)
@@ -314,19 +315,15 @@ function editarAvaliacao(parent, avaliacao) {
 }
 
 function pegarIniciais(nome) {
-    // Remove espaços extras e divide a string em palavras
     const palavras = nome.trim().split(/\s+/);
 
-    // Inicializa uma variável para armazenar as iniciais
     let iniciais = "";
 
-    // Loop pelas palavras para obter a inicial de cada uma
     palavras.forEach(palavra => {
-        // Se a palavra não estiver vazia, concatena sua inicial
         if (palavra.length > 0) {
             iniciais += palavra[0].toUpperCase();
         }
     });
 
-    return iniciais[0] + iniciais[1];
+    return `${iniciais.length >= 2 ? iniciais.substring(0, 2) : iniciais[0]}`;
 }

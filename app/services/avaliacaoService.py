@@ -52,12 +52,13 @@ def getAvaliacao(empresaId, avaliacaoId):
     
 def avWthOwner(avaliacao):
     user = auth.validateSession()
+    if("tipo" in user and user["tipo"]== 'ADMIN'):
+        avaliacao["isClientAdmin"] = True
+
     if user and user["email"] == avaliacao["author"]["email"]:
         avaliacao["isClientOwner"] = True
-        return avaliacao
+
     return avaliacao
-
-
 
 def excluirAvaliacao(empresaId, avaliacaoId):
     u = auth.validateSession()
@@ -65,12 +66,17 @@ def excluirAvaliacao(empresaId, avaliacaoId):
         return exceptions.throwUserNotAuthenticatedException()
     
     usuario = db.session.get(Usuario, u["id"])
+
     if not usuario:
         session.clear()
         return exceptions.throwUsuárioNotFoundException()
 
     try:
-        avaliacao = db.session.scalars(usuario.avaliacoes.select().where(sa.and_(Avaliacao.id == avaliacaoId, Avaliacao.empresa_id == empresaId))).one()
+        query = sa.select(Avaliacao).where(sa.and_(Avaliacao.id == avaliacaoId, Avaliacao.empresa_id == empresaId)).options(sa.orm.joinedload(Avaliacao.author))
+        avaliacao = db.session.scalars(query).one()
+
+        if(avaliacao.author_id != usuario.id and usuario.tipo != 'ADMIN'):
+            return exceptions.throwUnauthorizedDeleteAvaliacaoException()
 
         db.session.delete(avaliacao)
         db.session.commit()
@@ -114,53 +120,3 @@ def editarAvaliacao(empresaId, avaliacaoId, data):
         print(e)
         db.session.rollback()
         return exceptions.throwUpdateAvaliacaoException()
-
-
-# def getUserAvaliacoes(empresaId, userId):
-#     conn = get_con()
-#     conn.row_factory = Row
-
-#     cursor = conn.cursor()
-
-#     query = '''
-#         SELECT av.id, av.empresa_id, av.titulo, av.texto, u.nome as autor_name, u.email as autor_email
-#         FROM avaliacoes av 
-#         LEFT JOIN usuarios u 
-#         ON u.id = av.autor_id 
-#         WHERE av.empresa_id = ? 
-#         AND av.autor_id = ?
-#     '''
-    
-#     cursor.execute(query, (empresaId,userId))
-#     rows = cursor.fetchall()
-
-#     avaliacoes = utils.row_list_to_dict_list(rows)
-
-#     conn.close()
-
-#     return avaliacoes
-
-# def getUserAvaliacao(empresaId, avaliacaoId, userId):
-#     conn = get_con()
-#     conn.row_factory = Row
-
-#     cursor = conn.cursor()
-
-#     query = '''
-#         SELECT av.id, av.empresa_id, av.titulo, av.texto, u.nome as autor_name, u.email as autor_email
-#         FROM avaliacoes av 
-#         LEFT JOIN usuarios u 
-#         ON u.id = av.autor_id 
-#         WHERE av.id = ? 
-#         AND av.autor_id = ?
-#         AND av.empresa_id = ? 
-#     '''
-    
-#     cursor.execute(query, (avaliacaoId,userId, empresaId))
-    
-#     row = cursor.fetchone()
-    
-#     conn.close()
-
-#     return utils.row_to_dict(row)
-
