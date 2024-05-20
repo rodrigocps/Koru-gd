@@ -11,11 +11,17 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 function renderPerfil(data){
+    defaultValues = data
+
+    const changeDefaultValuesFn = (newValues) => {
+        defaultValues = newValues
+    }
+
     const nome = document.getElementById("nome")
     const email = document.getElementById("email")
 
-    nome.value = data.nome
-    email.value = data.email
+    nome.value = defaultValues.nome
+    email.value = defaultValues.email
 
     const editNomeBtn = document.getElementById("edit-nome-btn")
     editNomeBtn.addEventListener("click", () => {
@@ -26,6 +32,9 @@ function renderPerfil(data){
             editNomeBtn.textContent = "Salvar"
         } else {
             editNomeBtn.textContent = "Editar"
+        }
+        if(nome.value.trim() !== defaultValues.nome.trim()){
+            renderSaveButtons({nome:nome, email:email}, defaultValues, changeDefaultValuesFn)
         }
     })
 
@@ -39,18 +48,16 @@ function renderPerfil(data){
         } else {
             editEmailBtn.textContent = "Editar"
         }
-    })
-
-    const list = [nome, email]
-    list.forEach(prop => {
-        prop.addEventListener("change", () => {
-            renderSaveButtons({nome:nome, email:email})
-        })
+        
+        if(email.value.trim() !== defaultValues.email.trim()){
+            renderSaveButtons({nome:nome, email:email}, defaultValues, changeDefaultValuesFn)
+        }
     })
 
 }
 
-function renderSaveButtons(body) {
+
+function renderSaveButtons(body, data, changeDefaultValuesFn) {
     const btnDiv = document.getElementById("btns-div")
     btnDiv.innerHTML = ""
 
@@ -58,12 +65,9 @@ function renderSaveButtons(body) {
     save.classList.add("btn", "btn-primary")
     save.textContent = "Salvar alterações"
 
-    const cancel = document.createElement("button")
-    cancel.classList.add("btn", "btn-secondary")
-    cancel.textContent = "Reverter alterações"
 
     save.addEventListener("click", () => {
-        fetch("/usuarios/profile/edit", {
+        fetch("/api/usuarios/" + data.id, {
             headers : {
                 "Content-type" : "application/json"
             },
@@ -74,11 +78,28 @@ function renderSaveButtons(body) {
             })
         }).then(response => {
             if(!response.ok) throw new Error("Erro ao atualizar usuario");
-        }).catch(error => console.log("Erro ao atualizar de usuário.", error))
+            return response.json()
+        }).then((data) => {
+            btnDiv.innerHTML = ""
+            changeDefaultValuesFn({...defaultValues, ...data})
+        })
+        .catch(error => console.log("Erro ao atualizar de usuário.", error))
     })
 
 
     btnDiv.append(save)
-    btnDiv.append(cancel)
+    if(body.nome.value !== data.nome || body.email.value !== data.email){ 
+        const cancel = document.createElement("button")
+        cancel.classList.add("btn", "btn-secondary")
+        cancel.textContent = "Reverter alterações"
+        cancel.addEventListener("click", () => {
+            body.nome.value = data.nome
+            body.email.value = data.email
+            btnDiv.innerHTML = ""
+        })
+        
+        btnDiv.append(cancel)
+    }
+        
 
 }

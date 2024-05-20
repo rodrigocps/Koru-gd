@@ -89,3 +89,15 @@ class Avaliacao(db.Model):
             },
             "empresa_id" : self.empresa_id
         }
+    
+    def to_dict_fetch_empresa(self):
+        return {
+            "id": self.id,
+            "titulo": self.titulo,
+            "texto" : self.texto,
+            "author": {
+                "email": self.author.email,
+                "nome" : self.author.nome
+            },
+            "empresa" : self.empresa.to_dict()
+        }

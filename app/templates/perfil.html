@@ -6,38 +6,47 @@ Perfil
 {% endblock %}
 
 {% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/avaliacoes.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/perfil.css') }}">
 {% endblock %}
 
 {% block scripts %}
+<script src="{{ url_for('static', filename='js/avaliacoes.js') }}"></script>
 <script src="{{ url_for('static', filename='js/perfil.js') }}"></script>
+
 {% endblock %}
 
 {% block content %}
     <div class="container">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Nome</span>
+        <h1>Perfil do usuário</h1>
+        <hr/>
+        <div class="profile-details">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Nome</span>
+                </div>
+                <input id="nome" type="text" class="form-control" placeholder="Nome" aria-label="nome" disabled>
+                <div class="input-group-append">
+                    <button id="edit-nome-btn" class="btn btn-outline-secondary" type="button">Editar</button>
+                </div>
             </div>
-            <input id="nome" type="text" class="form-control" placeholder="Nome" aria-label="nome" disabled>
-            <div class="input-group-append">
-                <button id="edit-nome-btn" class="btn btn-outline-secondary" type="button">Editar</button>
+        
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Email</span>
+                </div>
+                <input id="email" type="text" class="form-control" placeholder="Email" aria-label="email" disabled>
+                <div class="input-group-append">
+                    <button id="edit-email-btn" class="btn btn-outline-secondary" type="button">Editar</button>
+                </div>
             </div>
-        </div>
-    
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Email</span>
-            </div>
-            <input id="email" type="text" class="form-control" placeholder="Email" aria-label="email" disabled>
-            <div class="input-group-append">
-                <button id="edit-email-btn" class="btn btn-outline-secondary" type="button">Editar</button>
-            </div>
+            
+            <div id="btns-div"></div>
         </div>
 
-        <div id="btns-div">
-            
-        </div>
+        <h2>Avaliações</h2>
+        <hr/>
+        <ul id="avaliacoes-list"></ul>
     </div>
 
 {% endblock %}

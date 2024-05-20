@@ -38,6 +38,17 @@ def getAvaliacoes(empresaId):
         return [avWthOwner(avaliacao.to_dict()) for avaliacao in avaliacoes]
     else:
         return exceptions.throwEmpresaNotFoundException()
+    
+def getAllAvaliacoes():
+    u = auth.validateSession()
+    if not u:
+        return exceptions.throwUserNotAuthenticatedException()
+
+    query = sa.select(Avaliacao).where(Avaliacao.author_id == u["id"])
+    avaliacoes = db.session.scalars(query).all()
+
+    return [avWthOwner(avaliacao.to_dict_fetch_empresa()) for avaliacao in avaliacoes]
+
         
 def getAvaliacao(empresaId, avaliacaoId):
     empresa = db.session.get(Empresa, empresaId)

@@ -32,6 +32,10 @@ class UsuarioController:
             id = request.args.get("id", default=None, type=int)
             return service.getUsuario(id)
         
+        @app.route(USUARIOS_ENDPOINT + "<int:userId>", methods=["PUT"])
+        def update_usuario(userId):
+            return service.atualizarUsuario(userId, request.json)
+
         @app.route(USUARIOS_ENDPOINT + "logout", methods = ["POST"])
         def logout_usuario():
             return service.logout()

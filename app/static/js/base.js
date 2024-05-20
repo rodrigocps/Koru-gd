@@ -1,9 +1,8 @@
-
 function renderAuthenticated(user){
     console.log("authenticated")
     const authButton = document.getElementById("auth-button");
     authButton.className = "logout-button"
-    authButton.textContent = "Logout"
+    authButton.textContent = "Sair"
     authButton.addEventListener("click" , (event) => {
         event.preventDefault()
         fetch("/api/usuarios/logout", {
