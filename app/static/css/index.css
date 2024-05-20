@@ -191,3 +191,23 @@ ul.lista-empresas {
     }
 
 }
+
+.page-link {
+    color: #009960;
+}
+
+.page-link:active {
+    background-color: #00c97f;
+}
+
+.page-link.active {
+    background-color: #009960;
+}
+
+.pagination {
+    --bs-pagination-active-bg: #009960;
+    --bs-pagination-active-border-color: #009960;
+    --bs-pagination-color:#009960;
+    --bs-pagination-hover-color: #009960;
+    --bs-pagination-focus-color: #ffffff;
+}

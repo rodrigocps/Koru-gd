@@ -56,8 +56,6 @@ function renderEmpresas(data, params) {
     }
 }
 
-
-
 function getColElement(empresa) {
     if (empresa.nome && empresa.id) {
         const col = document.createElement("div");
@@ -95,23 +93,6 @@ function getColElement(empresa) {
         return col;
     }
     return undefined
-}
-
-function renderSearch() {
-    document.getElementById("search-btn").addEventListener("click", (event) => {
-        event.preventDefault()
-        const search = document.getElementById("search").value
-
-        
-        if(search.length > 0 && !(/^[\s\t]*$/.test(search)) ) {
-            const params = defParam("search", search)
-            if(params.get("pagina")) params.set("pagina", 1)
-            window.location.href = window.location.pathname + "?" + params.toString()
-        }
-        else {
-            window.location.href = window.location.href
-        }
-    })
 }
 
 function renderPagination(maxPaginas, params){
@@ -212,15 +193,12 @@ function defParam(param, value){
     
 }
 
-
 document.addEventListener('DOMContentLoaded', function() {
         const params = new URLSearchParams(window.location.search);
         const pagina = params.get("pagina") ? params.get("pagina") : 1
         const search = params.get("search") ? params.get("search") : null
 
         fetchEmpresas(pagina, search);
-
-        renderSearch()
     }
 )
 

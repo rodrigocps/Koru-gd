@@ -1,75 +1,57 @@
-# Como rodar o ambiente virtual
+# Projeto Koru Jobs
 
-Este repositório contém um guia simples sobre como configurar e ativar um ambiente virtual Python usando o módulo `venv`.
+Este projeto se trata de um MVC(Minimum Viable Concept) fullstack feito em Flask de um sistema de avaliações onde o usuário conta sua experiência sobre a empresa que trabalho. Sendo assim, outros usuários podem consultar informações de experiencias sobre os colaboradores da empresa em que pretende se candidatar para um possível processo seletivo.
 
 ## Pré-requisitos
 
-- Python 3.x instalado em seu sistema. Você pode fazer o download e instalar o Python a partir do [site oficial do Python](https://www.python.org/downloads/).
-- Git instalado em seu sistema, se desejar clonar este repositório. Você pode fazer o download e instalar o Git a partir do [site oficial do Git](https://git-scm.com/downloads).
+- Python 3.x instalado
+- pip (Python package installer) instalado
 
-## Passos Ativar o Ambiente Virtual
+## Configuração do Projeto
 
-1. Clone este repositório para o seu sistema local, se ainda não o fez.
+1. **Clonar o repositório**
 
-    ```bash
-    git clone https://github.com//rodrigocps/Koru-gd.git
-    ```
+   ```bash
+   git clone https://github.com/rodrigocps/Koru-gd
+   cd Koru-gd
+   ```
 
-2. Navegue até o diretório do repositório clonado.
+2. **Criar e ativar um ambiente virtual**
 
-    ```bash
-    cd seu_repositorio
-    ```
+   ```bash
+   python -m venv venv
+   ```
 
-3. Crie um novo ambiente virtual usando o módulo `venv`. Substitua `nome_do_ambiente` pelo nome que você deseja dar ao seu ambiente virtual.
+   - No Windows:
+     ```bash
+     venv\Scripts\activate
+     ```
+   - No macOS e Linux:
+     ```bash
+     source venv/bin/activate
+     ```
 
-    ```bash
-    python3 -m venv venv
-    ```
+3. **Instalar as dependências**
 
-4. Ative o ambiente virtual. Os comandos para ativação podem variar dependendo do sistema operacional:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-    - No Windows usando CMD:
+4. **Executar o projeto**
 
-        ```bash
-        venv\Scripts\activate
-        ```
+   ```bash
+   flask run
+   ```
 
-    - No Windows usando PowerShell:
+   Por padrão, o Flask roda no endereço `http://127.0.0.1:5000/`.
 
-        ```bash
-        venv\Scripts\Activate.ps1
-        ```
+## Configurando o .gitignore
 
-    - No macOS e Linux:
+Certifique-se de adicionar ao seu arquivo `.gitignore` os seguintes itens:
 
-        ```bash
-        source venv/bin/activate
-        ```
+- Arquivos de banco de dados SQLite (*.db)
+- Diretórios de ambientes virtuais (geralmente chamados de `venv/` ou `virtualenv/`)
+- Diretórios `__pycache__/`
 
-6. Quando terminar de trabalhar no projeto e quiser sair do ambiente virtual, basta executar:
-
-    ```bash
-    deactivate
-    ```
-
-    Isso irá desativar o ambiente virtual e você voltará ao ambiente global do Python.
-    
-As dependencias que voce vai precisar instalar são as seguintes: 
-- flask:
-    ```bash
-    pip install flask
-    ```
-
-- python-dotenv:
-    ```bash
-    pip install python-dotenv
-    ```
-
-- marshmallow:
-    ```bash
-    pip install marshmallow
-    ```
-## Observações
-
-- É uma prática recomendada adicionar o diretório do ambiente virtual ao `.gitignore` do seu projeto para evitar que ele seja incluído no controle de versão.
+Isso garantirá que esses arquivos e diretórios não sejam incluídos no controle de versão do Git.
+```
