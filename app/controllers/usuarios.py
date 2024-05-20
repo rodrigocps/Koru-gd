@@ -1,7 +1,5 @@
 from flask import request, render_template
 from app.services import usuarioService as service, authService
-from app.schemas.schemasValidation import validate, getLoginSchema, getUsuarioSchema
-
 
 USUARIOS_ENDPOINT = "/api/usuarios/"
 
@@ -19,21 +17,19 @@ register:
 login:
 1 - Uso um session.clear() nessa página ?
 '''
-class Usuario:
+class UsuarioController:
     def register_routes(app):
         @app.route(USUARIOS_ENDPOINT, methods=["POST"])
         def create_usuario():
-            usuario = validate(request.json, getUsuarioSchema())
-            return service.adicionarUsuario(usuario)
+            return service.adicionarUsuario(request.json)
         
         @app.route(USUARIOS_ENDPOINT + "auth", methods=["POST"])
         def login_usuario():
-            login = validate(request.json, getLoginSchema())
-            return service.login(login)
+            return service.login(request.json)
         
-        @app.route(USUARIOS_ENDPOINT + "<int:id>", methods=["GET"])
-        def get_usuario(id):
-            return service.getUsuario(id)
+        # @app.route(USUARIOS_ENDPOINT + "<int:id>", methods=["GET"])
+        # def get_usuario(id):
+        #     return service.getUsuario(id)
         
         @app.route(USUARIOS_ENDPOINT + "logout", methods = ["POST"])
         def logout_usuario():

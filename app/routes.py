@@ -1,16 +1,15 @@
 # Neste módulo serão chamadas as rotas referentes aos modelos do projeto
 
 from app import app
-
-from app.controllers.avaliacoes import Avaliacao
-from app.controllers.empresas import Empresa
-from app.controllers.usuarios import Usuario
-
 from flask import render_template
 
-Usuario.register_routes(app)
-Avaliacao.register_routes(app)
-Empresa.register_routes(app)
+from app.controllers.avaliacoes import AvaliacaoController as ac
+from app.controllers.empresas import EmpresaController as ec
+from app.controllers.usuarios import UsuarioController as uc
+
+uc.register_routes(app)
+ac.register_routes(app)
+ec.register_routes(app)
 
 @app.route("/", methods=["GET"])
 @app.route("/index", methods=["GET"])
@@ -22,10 +21,10 @@ def home():
 # AS ROTAS ABAIXO ESTÃO NA ARQUITETURA MVC. 
 # ROTAS DESCONTINUADAS POR DECISÃO DE MUDAR PARA ARQUITETURA REST API.
 
-# @app.route('/')
-# @app.route('/index')
-# def index():
-#     return render_template('index.html')
+@app.route('/')
+@app.route('/index')
+def index():
+    return render_template('index.html')
 
 # @app.route("/signup", methods=["GET", "POST"])
 # def cadastrar():
