@@ -1,0 +1,79 @@
+#root {
+    margin-top: 40px;
+}
+
+.profile-details {
+    margin: 0 4vw;
+}
+
+.avaliacao-author-name{
+    display: none;
+}
+
+#aval-empresa-header {
+    display: flex;
+    align-items: center;
+    gap: 1vw;
+    margin-top: 20px;
+}
+
+h1 {
+    font-size: 25px;
+}
+
+h2 {
+    font-size: 23px;
+}
+
+h3 {
+    font-size: 20px;
+}
+
+hr {
+    background-color: rgba(0,0,0,.2);;
+}
+
+#aval-empresa-header {
+    padding: 10px;
+    border: solid 1px rgba(0,0,0,.2);
+}
+
+#aval-empresa-header > h3 > a {
+    text-decoration: none;
+    font-size: inherit;
+    color: black;
+}
+
+#aval-empresa-header > h3 > a:hover {
+    color: #009960;
+}
+
+#aval-empresa-header > img {
+    height: 50px;
+}
+
+
+.avaliacao-li {
+    margin: 0 2vw;
+}
+
+#btns-div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1vw;
+    margin: 10px 0;
+}
+
+.avatar-icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    margin-top: 30px;
+}
+
+.btn {
+    font-size: 14px !important;
+}

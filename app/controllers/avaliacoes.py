@@ -13,6 +13,10 @@ class AvaliacaoController:
         def list_avaliacoes(empresaId):
             return service.getAvaliacoes(empresaId)
         
+        @app.route("/api/usuarios/avaliacoes", methods=['GET'])
+        def list_all_avaliacoes():
+            return service.getAllAvaliacoes()
+        
         @app.route(AVALIACOES_ENDPOINT + "<int:avaliacaoId>", methods=['GET'])
         def find_avaliacao(empresaId, avaliacaoId):
             return service.getAvaliacao(empresaId, avaliacaoId)

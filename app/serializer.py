@@ -29,6 +29,7 @@ class UsuarioSchema(Schema):
     nome = fields.String()
     email = fields.Email()
     senha = fields.String()
+    tipo = fields.String()
 
 class UsuarioLoginSchema(Schema):
     class Meta:

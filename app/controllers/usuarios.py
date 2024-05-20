@@ -1,5 +1,5 @@
-from flask import request, render_template
-from app.services import usuarioService as service, authService
+from flask import request, render_template, redirect, url_for
+from app.services import usuarioService as service, authService as auth
 
 USUARIOS_ENDPOINT = "/api/usuarios/"
 
@@ -27,19 +27,24 @@ class UsuarioController:
         def login_usuario():
             return service.login(request.json)
         
-        # @app.route(USUARIOS_ENDPOINT + "<int:id>", methods=["GET"])
-        # def get_usuario(id):
-        #     return service.getUsuario(id)
+        @app.route(USUARIOS_ENDPOINT + "profile", methods=["GET"])
+        def get_usuario():
+            id = request.args.get("id", default=None, type=int)
+            return service.getUsuario(id)
         
+        @app.route(USUARIOS_ENDPOINT + "<int:userId>", methods=["PUT"])
+        def update_usuario(userId):
+            return service.atualizarUsuario(userId, request.json)
+
         @app.route(USUARIOS_ENDPOINT + "logout", methods = ["POST"])
         def logout_usuario():
             return service.logout()
         
         @app.route(USUARIOS_ENDPOINT + "validate", methods = ["GET"])
         def validate_usuario():
-            return authService.validateLogin()
+            return auth.validateLogin()
+            
         ################## FRONTEND ################## 
-        
         @app.route("/signup", methods=["GET"])
         def registro():
             return render_template("registro.html")
@@ -48,9 +53,12 @@ class UsuarioController:
         def login():
             return render_template("login.html")
         
-        
-        # Perfil de usuário
-
-        # @app.route("/perfil", methods=["GET"])
-        # def perfil():
-        #     return render_template("perfil.html")
+        @app.route("/perfil", methods=["GET"])
+        def perfil():
+            u = auth.validateSession();
+            if(u):
+                if(u["tipo"] == "ADMIN"):
+                    return render_template("perfil.html", admin=True)
+                return render_template("perfil.html")
+            else:
+                return redirect("/")

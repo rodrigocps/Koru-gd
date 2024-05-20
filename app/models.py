@@ -27,6 +27,18 @@ class Usuario(db.Model):
     
     def to_dict(self):
         return {"id":self.id, "nome":self.nome, "email":self.email, "tipo": self.tipo}
+    def to_dict_fetch_avaliacoes(self):
+        avaliacoes = db.session.scalars(
+            sa.select(Avaliacao).where(Avaliacao.author_id == self.id)
+        ).all()
+
+        return {
+            "id":self.id, 
+            "nome":self.nome, 
+            "email":self.email, 
+            "tipo": self.tipo,
+            "avaliacoes": [avaliacao.to_dict() for avaliacao in avaliacoes]
+        }
     
     
 class Empresa(db.Model):
@@ -76,4 +88,16 @@ class Avaliacao(db.Model):
                 "nome" : self.author.nome
             },
             "empresa_id" : self.empresa_id
+        }
+    
+    def to_dict_fetch_empresa(self):
+        return {
+            "id": self.id,
+            "titulo": self.titulo,
+            "texto" : self.texto,
+            "author": {
+                "email": self.author.email,
+                "nome" : self.author.nome
+            },
+            "empresa" : self.empresa.to_dict()
         }
