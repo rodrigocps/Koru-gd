@@ -20,6 +20,7 @@ function renderAuthenticated(user){
     if(user) {
         const userName = document.getElementById("user-name");
         userName.textContent = user?.nome ?? ""
+        userName.href = "/perfil"
 
         const navBar = document.querySelector("ul.navbar-nav");
         // <a class="nav-link mx-lg-2 active" aria-current="page" href="/">Início</a>

@@ -28,7 +28,14 @@ body {
     font-weight: 600;
     color: #009960 !important;
     font-size: 24px;
+    
+    transition: color .5s ease;
 }
+
+.navbar-brand:hover {
+    color: #00c97f !important;
+}
+
 
 .login-button, .logout-button {
     background-color: #009960;
@@ -49,6 +56,13 @@ body {
     padding: 1vw;
     color: #009960;
     font-weight: 500;
+    text-decoration: none;
+}
+
+#user-name:hover {
+    cursor: pointer;
+    color: #00c97f;
+    transition: color .5s ease;
 }
 
 .login-button:hover {
