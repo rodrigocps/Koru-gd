@@ -1,6 +1,7 @@
 from flask import make_response, jsonify
 from app.serializer import UsuarioSchema, UsuarioLoginSchema
 from app.models import Usuario
+from app.services import authService as auth
 import sqlalchemy as sa
 from sqlalchemy.exc import NoResultFound, IntegrityError
 from app import db
@@ -50,8 +51,23 @@ def login(data):
         return exceptions.throwUsuárioNotFoundException()
 
 
-# def getUsuario(id):
-#     return ""
+def getUsuario(id):
+    u = auth.validateSession()
+    if not u:
+        return exceptions.throwUserNotAuthenticatedException()
+    
+    userId = u["id"]
+    if(id and u["tipo"]=='ADMIN'):
+        userId = id
+    
+    try:
+        query = sa.select(Usuario).where(Usuario.id == userId)
+        usuario = db.session.scalars(query).one()
+
+        return usuario.to_dict_fetch_avaliacoes()
+    except NoResultFound:
+        session.clear()
+        return exceptions.throwNotFoundException("Usuário não encontrado.")
 
 def logout():
     session.clear()

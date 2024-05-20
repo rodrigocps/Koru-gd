@@ -21,6 +21,20 @@ function renderAuthenticated(user){
     if(user) {
         const userName = document.getElementById("user-name");
         userName.textContent = user?.nome ?? ""
+
+        const navBar = document.querySelector("ul.navbar-nav");
+        // <a class="nav-link mx-lg-2 active" aria-current="page" href="/">Início</a>
+        const profileItem = document.createElement("a")
+        profileItem.classList.add("nav-link", "mx-lg-2", "active")
+        profileItem.ariaCurrent = "page"
+        profileItem.href = "/perfil"
+        profileItem.textContent = "Perfil"
+
+        const li = document.createElement("li")
+        li.classList.add("nav-item")
+        li.append(profileItem)
+
+        navBar.append(li)
     }
 }
 
