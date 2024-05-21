@@ -53,6 +53,13 @@ td {
     padding: 10px 2.5vw;
 }
 
+.search-buttons {
+    display: flex;
+    gap: .5vw;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-bottom: 10px;
+}
 
 table {
     margin-top: 10px;
