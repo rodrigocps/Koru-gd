@@ -75,9 +75,9 @@ const renderOutrosUsuarios = (tabContent) => {
     const sizeParams = Array.from(params.keys()).length;
 
     let checkboxList = [
+        addFormCheckbox("searchById", "SEARCH_BY_ID", "Pesquisar por Id", (sizeParams > 0) ? params.has("SEARCH_BY_ID") : true, form),
         addFormCheckbox("searchByName", "SEARCH_BY_NAME", "Pesquisar por Nome", (sizeParams > 0) ? params.has("SEARCH_BY_NAME") : true, form),
-        addFormCheckbox("searchByEmail", "SEARCH_BY_EMAIL", "Pesquisar por Email", (sizeParams > 0) ? params.has("SEARCH_BY_EMAIL") : true, form),
-        addFormCheckbox("searchById", "SEARCH_BY_ID", "Pesquisar por Id", (sizeParams > 0) ? params.has("SEARCH_BY_ID") : true, form)
+        addFormCheckbox("searchByEmail", "SEARCH_BY_EMAIL", "Pesquisar por Email", (sizeParams > 0) ? params.has("SEARCH_BY_EMAIL") : true, form)
     ]
 
 
@@ -87,33 +87,64 @@ const renderOutrosUsuarios = (tabContent) => {
     submitBtn.type = "submit"
     submitBtn.textContent = "Pesquisar"
 
+    const searchAllBtn = document.createElement("button")
+    searchAllBtn.classList.add("btn", "btn-secondary")
+    searchAllBtn.id = "searchAllUsresBtn"
+    searchAllBtn.type = "btn"
+    searchAllBtn.textContent = "Ver todos os usuários"
+    
+
     submitBtn.addEventListener("click", (event) => {
         event.preventDefault()
 
         const queryParams = new URLSearchParams(getPageSearchParams())
+        queryParams.delete("SEARCH_ALL")
         checkboxList.forEach(checkbox => {
             if(checkbox.checked) {
                 queryParams.set(checkbox.name, 1)
-            }
+            } else queryParams.delete(checkbox.name)
         })
 
         if(searchInput.value !== "") {
             queryParams.set("search", searchInput.value)
         } else queryParams.delete("search")
         const paramSize = Array.from(queryParams.keys()).length;
+
         window.location.href = window.location.pathname +  formatHash(window.location.hash) +`${paramSize > 0 ? "?" + queryParams : ""}`
 
         renderUsersList(queryParams, tabContent)
     })
+    searchAllBtn.addEventListener("click", (event) => {
+        event.preventDefault()
+        const queryParams = new URLSearchParams()
+        queryParams.set("SEARCH_ALL", 1)
 
-    form.append(submitBtn)
+        window.location.href = window.location.pathname +  formatHash(window.location.hash) + "?" + queryParams
+        
+        renderUsersList(queryParams, tabContent)
+    })
+
+    const btnsDiv = document.createElement("div")
+    btnsDiv.classList.add("search-buttons")
+
+    btnsDiv.append(submitBtn)
+    btnsDiv.append(searchAllBtn)
+
+    form.append(btnsDiv)
 
     tabContent.append(form)
 }
 
 const renderUsersList = (queryParams, tabContent) => {
     const paramSize = Array.from(queryParams.keys()).length;
-    fetch("api/usuarios" + `${paramSize > 0 ? "?" + queryParams : ""}`)
+    if(paramSize == 0) return;
+
+    const hasSearchAll = queryParams.has("SEARCH_ALL");
+    const search = queryParams.get("search")
+    
+    if(!search && !hasSearchAll) return;
+
+    fetch("api/usuarios" + `${!hasSearchAll ? ("?" + queryParams) : ""}`)
         .then(response => {
             if(!response.ok) throw new Error("Erro ao buscar usuarios..")
             return response.json()
@@ -250,6 +281,8 @@ const addFormCheckbox = (id, name, label, state, form) => {
 
 const formatHash = (hash) => {
     let returnValue = ""
+
+    let start = false
     for(let i=0; i < hash.length; i++){
         if(hash[i] === "&" || hash[i] === "?"){
             return returnValue;

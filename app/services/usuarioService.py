@@ -87,20 +87,21 @@ def listUsuarios(requestArgs):
     
     if search is not None:
         if byNome:
-            conditions.append(Usuario.nome.like("%{}%".format(search)))
+            conditions.append(sa.func.lower(Usuario.nome).like(sa.func.lower("%{}%".format(search))))
         if byEmail:
-            conditions.append(Usuario.email.like("%{}%".format(search)))
+            conditions.append(sa.func.lower(Usuario.email).like(sa.func.lower("%{}%".format(search))))
         if byId:
             try:
                 search_id = int(search)
                 conditions.append(Usuario.id == search_id)
             except ValueError:
-                pass
+                if not byNome and not byEmail:
+                    return []
 
     if not conditions:
-        conditions.append(Usuario.nome.like("%{}%".format(search)))
-    
-    query = sa.select(Usuario).where(sa.or_(*conditions))
+        query = sa.select(Usuario)
+    else:
+        query = sa.select(Usuario).where(sa.or_(*conditions))
 
     try:
         usuarios = db.session.scalars(query).all()

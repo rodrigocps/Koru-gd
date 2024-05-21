@@ -53,9 +53,12 @@ td {
     padding: 10px 2.5vw;
 }
 
-.form-check-input:checked {
-    background-color: #009960;
-    border-color: #009960;
+.search-buttons {
+    display: flex;
+    gap: .5vw;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-bottom: 10px;
 }
 
 table {

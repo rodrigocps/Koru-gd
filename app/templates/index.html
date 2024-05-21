@@ -21,14 +21,29 @@
                 <h2>Sinta-se a vontade para avaliar</h2>
             </div>
             <div class="search-box">
-                <form id="search-bar">
-                    <input 
+                <form >
+                    <div id="search-bar">
+                        <input 
                         type="text"
                         id="search"
                         name="search"
                         placeholder="Pesquisar empresas"
-                    />
-                    <button id="search-btn" type="submit">Pesquisar</button>
+                        />
+
+                        <button id="search-btn" type="submit">Pesquisar</button>
+                    </div>
+
+                    <div class="search-checkboxes">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="SEARCH_BY_NAME" id="searchByName">
+                            <label class="form-check-label" for="searchByName">Pesquisar empresa por nome</label>
+                        </div>
+    
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="SEARCH_BY_SETOR" id="searchBySetor">
+                            <label class="form-check-label" for="searchBySetor">Pesquisar empresa por setor</label>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -36,6 +51,5 @@
     <div class="lista container" id="empresas">
     </div>
 </div>
-
 
 {% endblock %}

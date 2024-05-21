@@ -133,6 +133,8 @@ ul.lista-empresas {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
+    padding: 0 2vw;
+    background-color: white;
 }
 
 @media (max-width:570px) {
@@ -140,6 +142,10 @@ ul.lista-empresas {
         width: 90vw;
         padding: 10px 1vw;
     }  
+    .search-checkboxes {
+        text-align: start;
+        margin: 0 5vw;
+    }
 }
 
 @media (min-width:571px) and (max-width: 820px){
@@ -150,6 +156,11 @@ ul.lista-empresas {
 
     .search-box {
         margin-top : 80px;
+    }
+
+    .search-checkboxes {
+        text-align: start;
+        margin: 0 3vw;
     }
 }
 @media (min-width:821px) {
@@ -168,7 +179,11 @@ ul.lista-empresas {
         width: 600px;
         padding: 10px;
     }  
-  
+
+    
+    .search-checkboxes {
+        text-align: start;
+    }
     
 }
 
@@ -193,21 +208,41 @@ ul.lista-empresas {
 }
 
 .page-link {
-    color: #009960;
+    color: black;
+    font-size : 15px
 }
 
 .page-link:active {
-    background-color: #00c97f;
+    background-color: #e3e3e3;
 }
 
-.page-link.active {
-    background-color: #009960;
+.page-link.active{
+    background-color: #e3e3e3;
+    color: black;
 }
+
+.filled{
+    background-color: #e3e3e3;
+    border: solid 1px #858585;
+}
+
+.page-link:hover {
+    background-color: #009960;
+    color: white;
+}
+
 
 .pagination {
     --bs-pagination-active-bg: #009960;
-    --bs-pagination-active-border-color: #009960;
+    --bs-pagination-active-border-color: #858585;
     --bs-pagination-color:#009960;
     --bs-pagination-hover-color: #009960;
     --bs-pagination-focus-color: #ffffff;
+}
+
+.search-checkboxes {
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
 }

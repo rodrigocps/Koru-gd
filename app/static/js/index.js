@@ -1,9 +1,11 @@
-function fetchEmpresas (pagina, search) {
+function fetchEmpresas (pagina, search, byName, bySetor) {
     let fetchUrl = "/api/empresas"
     const params = new URLSearchParams()
     
     if(pagina) params.append("pagina",pagina)
     if(search) params.append("search", search)
+    if(byName) params.append(byName, 1)
+    if(bySetor) params.append(bySetor, 1)
 
     if(pagina||search)
         fetchUrl = fetchUrl + `?` + params.toString()
@@ -28,7 +30,6 @@ function renderEmpresas(data, params) {
     listaDiv.innerHTML = ""
 
     if(empresas.length > 0) {
-
         const title = document.createElement("h2")
         title.textContent = "Empresas para você avaliar"
         
@@ -41,7 +42,9 @@ function renderEmpresas(data, params) {
                 row.appendChild(elem)
         });
 
+
         listaDiv.appendChild(title)
+
         listaDiv.appendChild(row)
 
         renderPagination(totalPaginas, params)
@@ -95,16 +98,17 @@ function getColElement(empresa) {
     return undefined
 }
 
-function renderPagination(maxPaginas, params){
+function renderPagination(maxPaginas, params, divAlternativa){
     if(maxPaginas == 1) return;
+
     const root = document.getElementById("root")
 
     const paginaAtual = params.get("pagina") ? Number(params.get("pagina"))  : 1
 
-    const navExistente = document.querySelector(".pagination-nav")
+    const navExistente = divAlternativa ? divAlternativa : document.querySelector(".pagination-nav")
     if(navExistente) navExistente.innerHTML = ""
 
-    const nav = navExistente ? navExistente : document.createElement("nav");
+    const nav = navExistente ? navExistente : document.createElement("div");
     nav.classList.add("pagination", "pagination-nav")
     nav.ariaLabel = "..."
 
@@ -113,16 +117,16 @@ function renderPagination(maxPaginas, params){
     anteriorLi.classList.add("page-item")
 
     const anterior = document.createElement("a")
-    anterior.classList.add("page-link")
-    anterior.textContent = "Anterior"
+    anterior.classList.add("page-link", "filled")
+    anterior.textContent = "Página anterior"
     anterior.href = "/?" + defParam("pagina", (paginaAtual - 1)).toString()
 
     const proximaLi = document.createElement("li")
     proximaLi.classList.add("page-item")
 
     const proxima = document.createElement("a")
-    proxima.classList.add("page-link")
-    proxima.textContent = "Proxima"
+    proxima.classList.add("page-link", "filled")
+    proxima.textContent = "Proxima página"
     proxima.href = "/?" + defParam("pagina", (paginaAtual + 1)).toString()
 
     const dotsLi = document.createElement("li")
@@ -142,8 +146,8 @@ function renderPagination(maxPaginas, params){
         return;
     }
 
-    let inicio = paginaAtual > 3 ? paginaAtual - 2 : 1
-    let fim = paginaAtual > 3 ? paginaAtual + 2 : 5 
+    let inicio = paginaAtual > 2 ? paginaAtual - 1 : 1
+    let fim = paginaAtual > 2 ? paginaAtual + 1 : 3 
 
     if(paginaAtual >= maxPaginas - 6) {
         adicionarPaginas(nav, maxPaginas - 6, maxPaginas - 2, paginaAtual)
@@ -197,8 +201,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const params = new URLSearchParams(window.location.search);
         const pagina = params.get("pagina") ? params.get("pagina") : 1
         const search = params.get("search") ? params.get("search") : null
-
-        fetchEmpresas(pagina, search);
+        const byName = params.get("SEARCH_BY_NAME") ? "SEARCH_BY_NAME" : null
+        const bySetor = params.get("SEARCH_BY_SETOR") ? "SEARCH_BY_SETOR" : null
+        fetchEmpresas(pagina, search, byName, bySetor);
     }
 )
 
