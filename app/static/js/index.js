@@ -1,9 +1,11 @@
-function fetchEmpresas (pagina, search) {
+function fetchEmpresas (pagina, search, byName, bySetor) {
     let fetchUrl = "/api/empresas"
     const params = new URLSearchParams()
     
     if(pagina) params.append("pagina",pagina)
     if(search) params.append("search", search)
+    if(byName) params.append(byName, 1)
+    if(bySetor) params.append(bySetor, 1)
 
     if(pagina||search)
         fetchUrl = fetchUrl + `?` + params.toString()
@@ -42,12 +44,6 @@ function renderEmpresas(data, params) {
 
 
         listaDiv.appendChild(title)
-        
-        const inicialPagDiv = document.createElement("div")
-        inicialPagDiv.classList.add("inicial-pagination", "pagination", "pagination-nav")
-        inicialPagDiv.ariaLabel = "..."
-
-        renderPagination(totalPaginas, params, inicialPagDiv)
 
         listaDiv.appendChild(row)
 
@@ -205,8 +201,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const params = new URLSearchParams(window.location.search);
         const pagina = params.get("pagina") ? params.get("pagina") : 1
         const search = params.get("search") ? params.get("search") : null
-
-        fetchEmpresas(pagina, search);
+        const byName = params.get("SEARCH_BY_NAME") ? "SEARCH_BY_NAME" : null
+        const bySetor = params.get("SEARCH_BY_SETOR") ? "SEARCH_BY_SETOR" : null
+        fetchEmpresas(pagina, search, byName, bySetor);
     }
 )
 

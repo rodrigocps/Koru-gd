@@ -53,10 +53,6 @@ td {
     padding: 10px 2.5vw;
 }
 
-.form-check-input:checked {
-    background-color: #009960;
-    border-color: #009960;
-}
 
 table {
     margin-top: 10px;

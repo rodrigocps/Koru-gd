@@ -28,12 +28,30 @@ def saveEmpresa(data):
     
     
 
-def listarEmpresas(pagina, search):
+def listarEmpresas(requestArgs):
+    pagina = requestArgs.get("pagina", default=1, type=int)
+    search = requestArgs.get("search", default=None, type=str)
+
+    byName = requestArgs.get("SEARCH_BY_NAME", default=None, type=int)
+    bySetor = requestArgs.get("SEARCH_BY_SETOR", default=None, type=int)
+
+    conditions = []
+
+    if(byName):
+        conditions.append(sa.func.lower(Empresa.nome).like(sa.func.lower('%{}%'.format(search))))
+    
+    if(bySetor):
+        conditions.append(sa.func.lower(Empresa.setor).like(sa.func.lower('%{}%'.format(search))))
+
     if(search):
-        query = sa.select(Empresa).where(sa.or_(
-            sa.func.lower(Empresa.nome).like(sa.func.lower('%{}%'.format(search))),
-            sa.func.lower(Empresa.setor).like(sa.func.lower('%{}%'.format(search)))
-        )).offset((pagina - 1) * 20).limit(20)
+        if not conditions:
+            query = sa.select(Empresa).where(sa.or_(
+                sa.func.lower(Empresa.nome).like(sa.func.lower('%{}%'.format(search))),
+                sa.func.lower(Empresa.setor).like(sa.func.lower('%{}%'.format(search)))
+            )).offset((pagina - 1) * 20).limit(20)
+        
+        else:
+            query = sa.select(Empresa).where(sa.or_(*conditions)).offset((pagina - 1) * 20).limit(20)
     else:
         query = sa.select(Empresa).offset((pagina - 1) * 20).limit(20)
         
