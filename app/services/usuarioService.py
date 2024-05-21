@@ -87,9 +87,9 @@ def listUsuarios(requestArgs):
     
     if search is not None:
         if byNome:
-            conditions.append(Usuario.nome.like("%{}%".format(search)))
+            conditions.append(sa.func.lower(Usuario.nome).like(sa.func.lower("%{}%".format(search))))
         if byEmail:
-            conditions.append(Usuario.email.like("%{}%".format(search)))
+            conditions.append(sa.func.lower(Usuario.email).like(sa.func.lower("%{}%".format(search))))
         if byId:
             try:
                 search_id = int(search)
