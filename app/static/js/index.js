@@ -28,7 +28,6 @@ function renderEmpresas(data, params) {
     listaDiv.innerHTML = ""
 
     if(empresas.length > 0) {
-
         const title = document.createElement("h2")
         title.textContent = "Empresas para você avaliar"
         
@@ -41,7 +40,15 @@ function renderEmpresas(data, params) {
                 row.appendChild(elem)
         });
 
+
         listaDiv.appendChild(title)
+        
+        const inicialPagDiv = document.createElement("div")
+        inicialPagDiv.classList.add("inicial-pagination", "pagination", "pagination-nav")
+        inicialPagDiv.ariaLabel = "..."
+
+        renderPagination(totalPaginas, params, inicialPagDiv)
+
         listaDiv.appendChild(row)
 
         renderPagination(totalPaginas, params)
@@ -95,16 +102,17 @@ function getColElement(empresa) {
     return undefined
 }
 
-function renderPagination(maxPaginas, params){
+function renderPagination(maxPaginas, params, divAlternativa){
     if(maxPaginas == 1) return;
+
     const root = document.getElementById("root")
 
     const paginaAtual = params.get("pagina") ? Number(params.get("pagina"))  : 1
 
-    const navExistente = document.querySelector(".pagination-nav")
+    const navExistente = divAlternativa ? divAlternativa : document.querySelector(".pagination-nav")
     if(navExistente) navExistente.innerHTML = ""
 
-    const nav = navExistente ? navExistente : document.createElement("nav");
+    const nav = navExistente ? navExistente : document.createElement("div");
     nav.classList.add("pagination", "pagination-nav")
     nav.ariaLabel = "..."
 

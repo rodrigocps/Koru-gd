@@ -133,10 +133,7 @@ ul.lista-empresas {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    padding: 20px 1vw;
+    padding: 0 2vw;
     background-color: white;
 }
 
