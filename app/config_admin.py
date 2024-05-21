@@ -15,8 +15,8 @@ senha = os.environ.get("ADMIN_SENHA")
 # email = "koru@mail.com"
 # senha = "koru123"
 # ############################################
-db.session.execute(sa.delete(Usuario).where(Usuario.email == "koru@mail.com"))
-db.session.commit()
+# db.session.execute(sa.delete(Usuario).where(Usuario.email == "koru@mail.com"))
+# db.session.commit()
 
 def addAdmin(email, senha):
     print("=> Configurando usuário administrador...")

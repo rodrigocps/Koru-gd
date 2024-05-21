@@ -1,3 +1,63 @@
 .tab-content {
     padding: 2vh 2vw;
 }
+
+.nav-tabs .nav-item {
+    color: #FFF;
+}
+
+.nav-link, .nav-link:hover {
+    color: black;
+}
+  
+.nav-tabs .nav-item .nav-link.active {
+    color: #009960;
+}
+    
+.tab-content {
+    border: 1px solid #dee2e6;
+    border-top: transparent;
+    padding: 15px;
+}
+
+.tab-content .tab-pane {
+    background-color: #FFF;
+    color: #009960;
+    min-height: 200px;
+    height: auto;
+}
+
+.search-user {
+    padding: 0 3vw;
+    border-bottom:  1px solid #dee2e6;
+}
+
+.search-input {
+    margin: 10px 0;
+}
+
+#searchUserBtn {
+    margin: 10px 0;
+}
+
+.table-div {
+    padding: 0 3vw;
+}
+
+td {
+    vertical-align: middle;
+    word-break: break-all;
+}
+
+#avaliacoes-list {
+    padding: 10px 2.5vw;
+}
+
+.form-check-input:checked {
+    background-color: #009960;
+    border-color: #009960;
+}
+
+table {
+    margin-top: 10px;
+}

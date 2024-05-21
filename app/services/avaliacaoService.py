@@ -39,12 +39,21 @@ def getAvaliacoes(empresaId):
     else:
         return exceptions.throwEmpresaNotFoundException()
     
-def getAllAvaliacoes():
+def getAllAvaliacoes(requestArgs):
     u = auth.validateSession()
     if not u:
         return exceptions.throwUserNotAuthenticatedException()
+    
+    id = u["id"]
+    if(requestArgs):
+        userId = requestArgs.get("userId", default=None, type=int)
+        if userId:
+            if u["tipo"] != "ADMIN":
+                return exceptions.throwUnauthorizedException("Somente um administrador pode executar essa ação.")
+            else:
+                id = userId
 
-    query = sa.select(Avaliacao).where(Avaliacao.author_id == u["id"])
+    query = sa.select(Avaliacao).where(Avaliacao.author_id == id)
     avaliacoes = db.session.scalars(query).all()
 
     return [avWthOwner(avaliacao.to_dict_fetch_empresa()) for avaliacao in avaliacoes]

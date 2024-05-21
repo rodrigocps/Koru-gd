@@ -68,6 +68,47 @@ def getUsuario(id):
     except NoResultFound:
         session.clear()
         return exceptions.throwNotFoundException("Usuário não encontrado.")
+    
+def listUsuarios(requestArgs):
+    u = auth.validateSession()
+    if not u:
+        return exceptions.throwUserNotAuthenticatedException()
+
+    if u["tipo"] != 'ADMIN':
+        return exceptions.throwUnauthorizedException("O usuário precisa ser administrador para executar essa ação.")
+    
+    search = requestArgs.get("search", default=None, type=str)  # Alterado para string
+
+    byNome = requestArgs.get("SEARCH_BY_NAME", default=None, type=int)
+    byEmail = requestArgs.get("SEARCH_BY_EMAIL", default=None, type=int)
+    byId = requestArgs.get("SEARCH_BY_ID", default=None, type=int)
+
+    conditions = []
+    
+    if search is not None:
+        if byNome:
+            conditions.append(Usuario.nome.like("%{}%".format(search)))
+        if byEmail:
+            conditions.append(Usuario.email.like("%{}%".format(search)))
+        if byId:
+            try:
+                search_id = int(search)
+                conditions.append(Usuario.id == search_id)
+            except ValueError:
+                pass
+
+    if not conditions:
+        conditions.append(Usuario.nome.like("%{}%".format(search)))
+    
+    query = sa.select(Usuario).where(sa.or_(*conditions))
+
+    try:
+        usuarios = db.session.scalars(query).all()
+        return [usuario.to_dict() for usuario in usuarios]
+    except Exception as e:
+        return exceptions.throwInternalServerErrorException("Ocorreu um erro ao buscar os usuários.")
+
+
 
 def logout():
     session.clear()

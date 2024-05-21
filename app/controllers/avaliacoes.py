@@ -15,7 +15,7 @@ class AvaliacaoController:
         
         @app.route("/api/usuarios/avaliacoes", methods=['GET'])
         def list_all_avaliacoes():
-            return service.getAllAvaliacoes()
+            return service.getAllAvaliacoes(request.args)
         
         @app.route(AVALIACOES_ENDPOINT + "<int:avaliacaoId>", methods=['GET'])
         def find_avaliacao(empresaId, avaliacaoId):
