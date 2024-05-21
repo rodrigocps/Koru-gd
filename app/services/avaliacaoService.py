@@ -63,11 +63,12 @@ def getAvaliacao(empresaId, avaliacaoId):
     
 def avWthOwner(avaliacao):
     user = auth.validateSession()
-    if("tipo" in user and user["tipo"]== 'ADMIN'):
-        avaliacao["isClientAdmin"] = True
+    if(user):
+        if user["tipo"] == 'ADMIN':
+            avaliacao["isClientAdmin"] = True
 
-    if user and user["email"] == avaliacao["author"]["email"]:
-        avaliacao["isClientOwner"] = True
+        if user["email"] == avaliacao["author"]["email"]:
+            avaliacao["isClientOwner"] = True
 
     return avaliacao
 

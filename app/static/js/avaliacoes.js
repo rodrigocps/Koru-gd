@@ -7,6 +7,7 @@ function render(){
         renderAllAvaliacoes();
     }
 }
+
 function renderAvaliacoes() {
     const params = new URLSearchParams(window.location.search);
     const empresaId = params.get('id');
@@ -356,7 +357,6 @@ function pegarIniciais(nome) {
 
 function getContext() {
     pathname = window.location.pathname
-    console.log(pathname)
     if(pathname == "/empresas/" || pathname == "/empresas")
         return "EMPRESA"
     else if(pathname == "/perfil/" || pathname == "/perfil")

@@ -21,11 +21,6 @@ def home():
 # AS ROTAS ABAIXO ESTÃO NA ARQUITETURA MVC. 
 # ROTAS DESCONTINUADAS POR DECISÃO DE MUDAR PARA ARQUITETURA REST API.
 
-@app.route('/')
-@app.route('/index')
-def index():
-    return render_template('index.html')
-
 # @app.route("/signup", methods=["GET", "POST"])
 # def cadastrar():
 #     if request.method == "GET":
