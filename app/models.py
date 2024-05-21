@@ -27,6 +27,7 @@ class Usuario(db.Model):
     
     def to_dict(self):
         return {"id":self.id, "nome":self.nome, "email":self.email, "tipo": self.tipo}
+    
     def to_dict_fetch_avaliacoes(self):
         avaliacoes = db.session.scalars(
             sa.select(Avaliacao).where(Avaliacao.author_id == self.id)

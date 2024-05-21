@@ -7,6 +7,7 @@ function render(){
         renderAllAvaliacoes();
     }
 }
+
 function renderAvaliacoes() {
     const params = new URLSearchParams(window.location.search);
     const empresaId = params.get('id');
@@ -35,14 +36,11 @@ function renderAvaliacoes() {
         }).catch(error => console.log(error))
 }
 
-function renderAllAvaliacoes() {
-    const params = new URLSearchParams(window.location.search);
-    const empresaId = params.get('id');
-
+function renderAllAvaliacoes(userId) {
     const list = document.getElementById("avaliacoes-list")
     list.innerHTML = ""
 
-    fetch(`/api/usuarios/avaliacoes`)
+    fetch(`/api/usuarios/avaliacoes${userId? "?userId="+userId : ""}`)
         .then(response => {
             if(response.ok)
                 return response.json()
@@ -82,6 +80,13 @@ function renderAllAvaliacoes() {
                         }
                     })
                 });
+            }
+            else {
+                const nothingToShow = document.createElement("div")
+                nothingToShow.classList.add("no-avaliacao-msg")
+                nothingToShow.textContent = "O usuário ainda não possui nenhuma avaliação."
+
+                list.appendChild(nothingToShow)
             }
         }).catch(error => console.log(error))
 }
@@ -356,7 +361,6 @@ function pegarIniciais(nome) {
 
 function getContext() {
     pathname = window.location.pathname
-    console.log(pathname)
     if(pathname == "/empresas/" || pathname == "/empresas")
         return "EMPRESA"
     else if(pathname == "/perfil/" || pathname == "/perfil")
