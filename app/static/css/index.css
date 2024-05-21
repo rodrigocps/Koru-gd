@@ -131,8 +131,7 @@ ul.lista-empresas {
     display: flex;
     width: 100%;
     align-items: center;
-    justify-items: center;
-    justify-content: end;
+    justify-content: center;
     flex-wrap: wrap;
     position: fixed;
     bottom: 0;
@@ -200,19 +199,21 @@ ul.lista-empresas {
 
 .page-link {
     color: black;
+    font-size : 15px
 }
 
 .page-link:active {
-    background-color: #585858;
+    background-color: #e3e3e3;
 }
 
 .page-link.active{
-    background-color: #858585;
-    color: white;
+    background-color: #e3e3e3;
+    color: black;
 }
 
 .filled{
     background-color: #e3e3e3;
+    border: solid 1px #858585;
 }
 
 .page-link:hover {
