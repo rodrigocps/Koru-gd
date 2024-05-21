@@ -113,16 +113,16 @@ function renderPagination(maxPaginas, params){
     anteriorLi.classList.add("page-item")
 
     const anterior = document.createElement("a")
-    anterior.classList.add("page-link")
-    anterior.textContent = "Anterior"
+    anterior.classList.add("page-link", "filled")
+    anterior.textContent = "Página anterior"
     anterior.href = "/?" + defParam("pagina", (paginaAtual - 1)).toString()
 
     const proximaLi = document.createElement("li")
     proximaLi.classList.add("page-item")
 
     const proxima = document.createElement("a")
-    proxima.classList.add("page-link")
-    proxima.textContent = "Proxima"
+    proxima.classList.add("page-link", "filled")
+    proxima.textContent = "Proxima página"
     proxima.href = "/?" + defParam("pagina", (paginaAtual + 1)).toString()
 
     const dotsLi = document.createElement("li")
@@ -142,8 +142,8 @@ function renderPagination(maxPaginas, params){
         return;
     }
 
-    let inicio = paginaAtual > 3 ? paginaAtual - 2 : 1
-    let fim = paginaAtual > 3 ? paginaAtual + 2 : 5 
+    let inicio = paginaAtual > 2 ? paginaAtual - 1 : 1
+    let fim = paginaAtual > 2 ? paginaAtual + 1 : 3 
 
     if(paginaAtual >= maxPaginas - 6) {
         adicionarPaginas(nav, maxPaginas - 6, maxPaginas - 2, paginaAtual)

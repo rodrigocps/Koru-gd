@@ -33,7 +33,7 @@ def listarEmpresas(pagina, search):
         query = sa.select(Empresa).where(sa.or_(
             sa.func.lower(Empresa.nome).like(sa.func.lower('%{}%'.format(search))),
             sa.func.lower(Empresa.setor).like(sa.func.lower('%{}%'.format(search)))
-        ))
+        )).offset(pagina).limit(20)
     else:
         query = sa.select(Empresa).offset(pagina).limit(20)
         

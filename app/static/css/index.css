@@ -131,8 +131,14 @@ ul.lista-empresas {
     display: flex;
     width: 100%;
     align-items: center;
-    justify-content: center;
+    justify-items: center;
+    justify-content: end;
     flex-wrap: wrap;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding: 20px 1vw;
+    background-color: white;
 }
 
 @media (max-width:570px) {
@@ -193,20 +199,31 @@ ul.lista-empresas {
 }
 
 .page-link {
-    color: #009960;
+    color: black;
 }
 
 .page-link:active {
-    background-color: #00c97f;
+    background-color: #585858;
 }
 
-.page-link.active {
-    background-color: #009960;
+.page-link.active{
+    background-color: #858585;
+    color: white;
 }
+
+.filled{
+    background-color: #e3e3e3;
+}
+
+.page-link:hover {
+    background-color: #04bb78;
+    color: white;
+}
+
 
 .pagination {
     --bs-pagination-active-bg: #009960;
-    --bs-pagination-active-border-color: #009960;
+    --bs-pagination-active-border-color: #858585;
     --bs-pagination-color:#009960;
     --bs-pagination-hover-color: #009960;
     --bs-pagination-focus-color: #ffffff;
